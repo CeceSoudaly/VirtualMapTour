@@ -15,6 +15,10 @@
 		A90D2AE11F53B14900297B90 /* VirtualMapTourTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D2AE01F53B14900297B90 /* VirtualMapTourTests.swift */; };
 		A90D2AEC1F53B14900297B90 /* VirtualMapTourUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D2AEB1F53B14900297B90 /* VirtualMapTourUITests.swift */; };
 		A90D2AFB1F53B50B00297B90 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A90D2AF91F53B50B00297B90 /* Model.xcdatamodeld */; };
+		A90D2B081F53B75700297B90 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D2B041F53B75700297B90 /* Photo.swift */; };
+		A90D2B091F53B75700297B90 /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D2B051F53B75700297B90 /* Photo+CoreDataProperties.swift */; };
+		A90D2B0A1F53B75700297B90 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D2B061F53B75700297B90 /* Location.swift */; };
+		A90D2B0B1F53B75700297B90 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D2B071F53B75700297B90 /* Location+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +53,10 @@
 		A90D2AEB1F53B14900297B90 /* VirtualMapTourUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualMapTourUITests.swift; sourceTree = "<group>"; };
 		A90D2AED1F53B14900297B90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A90D2AFA1F53B50B00297B90 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		A90D2B041F53B75700297B90 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Photo.swift; path = model/Photo.swift; sourceTree = "<group>"; };
+		A90D2B051F53B75700297B90 /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photo+CoreDataProperties.swift"; path = "model/Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A90D2B061F53B75700297B90 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = model/Location.swift; sourceTree = "<group>"; };
+		A90D2B071F53B75700297B90 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Location+CoreDataProperties.swift"; path = "model/Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +87,10 @@
 		A90D2ABF1F53B14900297B90 = {
 			isa = PBXGroup;
 			children = (
+				A90D2B041F53B75700297B90 /* Photo.swift */,
+				A90D2B051F53B75700297B90 /* Photo+CoreDataProperties.swift */,
+				A90D2B061F53B75700297B90 /* Location.swift */,
+				A90D2B071F53B75700297B90 /* Location+CoreDataProperties.swift */,
 				A90D2AF91F53B50B00297B90 /* Model.xcdatamodeld */,
 				A90D2ACA1F53B14900297B90 /* VirtualMapTour */,
 				A90D2ADF1F53B14900297B90 /* VirtualMapTourTests */,
@@ -262,8 +274,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A90D2B0A1F53B75700297B90 /* Location.swift in Sources */,
+				A90D2B0B1F53B75700297B90 /* Location+CoreDataProperties.swift in Sources */,
 				A90D2ACE1F53B14900297B90 /* ViewController.swift in Sources */,
 				A90D2ACC1F53B14900297B90 /* AppDelegate.swift in Sources */,
+				A90D2B081F53B75700297B90 /* Photo.swift in Sources */,
+				A90D2B091F53B75700297B90 /* Photo+CoreDataProperties.swift in Sources */,
 				A90D2AFB1F53B50B00297B90 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
