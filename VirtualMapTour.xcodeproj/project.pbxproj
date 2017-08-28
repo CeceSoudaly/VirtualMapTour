@@ -14,6 +14,7 @@
 		A90D2AD61F53B14900297B90 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A90D2AD41F53B14900297B90 /* LaunchScreen.storyboard */; };
 		A90D2AE11F53B14900297B90 /* VirtualMapTourTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D2AE01F53B14900297B90 /* VirtualMapTourTests.swift */; };
 		A90D2AEC1F53B14900297B90 /* VirtualMapTourUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D2AEB1F53B14900297B90 /* VirtualMapTourUITests.swift */; };
+		A90D2AFB1F53B50B00297B90 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A90D2AF91F53B50B00297B90 /* Model.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		A90D2AE71F53B14900297B90 /* VirtualMapTourUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirtualMapTourUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A90D2AEB1F53B14900297B90 /* VirtualMapTourUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualMapTourUITests.swift; sourceTree = "<group>"; };
 		A90D2AED1F53B14900297B90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A90D2AFA1F53B50B00297B90 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 		A90D2ABF1F53B14900297B90 = {
 			isa = PBXGroup;
 			children = (
+				A90D2AF91F53B50B00297B90 /* Model.xcdatamodeld */,
 				A90D2ACA1F53B14900297B90 /* VirtualMapTour */,
 				A90D2ADF1F53B14900297B90 /* VirtualMapTourTests */,
 				A90D2AEA1F53B14900297B90 /* VirtualMapTourUITests */,
@@ -261,6 +264,7 @@
 			files = (
 				A90D2ACE1F53B14900297B90 /* ViewController.swift in Sources */,
 				A90D2ACC1F53B14900297B90 /* AppDelegate.swift in Sources */,
+				A90D2AFB1F53B50B00297B90 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +509,7 @@
 				A90D2AF21F53B14900297B90 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A90D2AF31F53B14900297B90 /* Build configuration list for PBXNativeTarget "VirtualMapTourTests" */ = {
 			isa = XCConfigurationList;
@@ -513,6 +518,7 @@
 				A90D2AF51F53B14900297B90 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A90D2AF61F53B14900297B90 /* Build configuration list for PBXNativeTarget "VirtualMapTourUITests" */ = {
 			isa = XCConfigurationList;
@@ -521,8 +527,23 @@
 				A90D2AF81F53B14900297B90 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A90D2AF91F53B50B00297B90 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A90D2AFA1F53B50B00297B90 /* Model.xcdatamodel */,
+			);
+			currentVersion = A90D2AFA1F53B50B00297B90 /* Model.xcdatamodel */;
+			name = Model.xcdatamodeld;
+			path = model/Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A90D2AC01F53B14900297B90 /* Project object */;
 }
