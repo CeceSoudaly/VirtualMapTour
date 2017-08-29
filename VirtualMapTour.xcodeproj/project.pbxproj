@@ -19,6 +19,7 @@
 		A90F8A891F551E7C00CF2D48 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90F8A851F551E7C00CF2D48 /* Location+CoreDataProperties.swift */; };
 		A90F8A8A1F551E7C00CF2D48 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90F8A861F551E7C00CF2D48 /* Photo.swift */; };
 		A90F8A8B1F551E7C00CF2D48 /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90F8A871F551E7C00CF2D48 /* Photo+CoreDataProperties.swift */; };
+		A90F8A8F1F55272200CF2D48 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90F8A8E1F55272200CF2D48 /* PhotoAlbumViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		A90F8A851F551E7C00CF2D48 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Location+CoreDataProperties.swift"; path = "model/Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A90F8A861F551E7C00CF2D48 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Photo.swift; path = model/Photo.swift; sourceTree = "<group>"; };
 		A90F8A871F551E7C00CF2D48 /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Photo+CoreDataProperties.swift"; path = "model/Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A90F8A8E1F55272200CF2D48 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotoAlbumViewController.swift; path = Controller/PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 		A90D2ABF1F53B14900297B90 = {
 			isa = PBXGroup;
 			children = (
+				A90F8A8D1F55266900CF2D48 /* Controller */,
 				A90F8A8C1F551EF000CF2D48 /* Model */,
 				A90D2ACA1F53B14900297B90 /* VirtualMapTour */,
 				A90D2ADF1F53B14900297B90 /* VirtualMapTourTests */,
@@ -146,6 +149,15 @@
 				A90D2AF91F53B50B00297B90 /* Model.xcdatamodeld */,
 			);
 			name = Model;
+			path = /Users/cecesoudaly/Desktop/VirtualMapTour;
+			sourceTree = "<absolute>";
+		};
+		A90F8A8D1F55266900CF2D48 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				A90F8A8E1F55272200CF2D48 /* PhotoAlbumViewController.swift */,
+			);
+			name = Controller;
 			path = /Users/cecesoudaly/Desktop/VirtualMapTour;
 			sourceTree = "<absolute>";
 		};
@@ -289,6 +301,7 @@
 				A90F8A881F551E7C00CF2D48 /* Location.swift in Sources */,
 				A90D2ACE1F53B14900297B90 /* ViewController.swift in Sources */,
 				A90D2ACC1F53B14900297B90 /* AppDelegate.swift in Sources */,
+				A90F8A8F1F55272200CF2D48 /* PhotoAlbumViewController.swift in Sources */,
 				A90D2AFB1F53B50B00297B90 /* Model.xcdatamodeld in Sources */,
 				A90F8A891F551E7C00CF2D48 /* Location+CoreDataProperties.swift in Sources */,
 			);
