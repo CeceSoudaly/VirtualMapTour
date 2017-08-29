@@ -87,11 +87,7 @@
 		A90D2ABF1F53B14900297B90 = {
 			isa = PBXGroup;
 			children = (
-				A90F8A841F551E7C00CF2D48 /* Location.swift */,
-				A90F8A851F551E7C00CF2D48 /* Location+CoreDataProperties.swift */,
-				A90F8A861F551E7C00CF2D48 /* Photo.swift */,
-				A90F8A871F551E7C00CF2D48 /* Photo+CoreDataProperties.swift */,
-				A90D2AF91F53B50B00297B90 /* Model.xcdatamodeld */,
+				A90F8A8C1F551EF000CF2D48 /* Model */,
 				A90D2ACA1F53B14900297B90 /* VirtualMapTour */,
 				A90D2ADF1F53B14900297B90 /* VirtualMapTourTests */,
 				A90D2AEA1F53B14900297B90 /* VirtualMapTourUITests */,
@@ -139,6 +135,19 @@
 			);
 			path = VirtualMapTourUITests;
 			sourceTree = "<group>";
+		};
+		A90F8A8C1F551EF000CF2D48 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A90F8A841F551E7C00CF2D48 /* Location.swift */,
+				A90F8A851F551E7C00CF2D48 /* Location+CoreDataProperties.swift */,
+				A90F8A861F551E7C00CF2D48 /* Photo.swift */,
+				A90F8A871F551E7C00CF2D48 /* Photo+CoreDataProperties.swift */,
+				A90D2AF91F53B50B00297B90 /* Model.xcdatamodeld */,
+			);
+			name = Model;
+			path = /Users/cecesoudaly/Desktop/VirtualMapTour;
+			sourceTree = "<absolute>";
 		};
 /* End PBXGroup section */
 

@@ -12,13 +12,12 @@ import CoreData
 
 extension Location {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Location> {
-        return NSFetchRequest<Location>(entityName: "Location")
-    }
-
-    @NSManaged public var latitude: Double
-    @NSManaged public var longtitude: Double
-    @NSManaged public var name: String?
-    @NSManaged public var photo: Photo?
+    
+    // Core data object attributes
+    @NSManaged var title: String
+    @NSManaged var subtitle: String
+    @NSManaged var latitude: Double
+    @NSManaged var longitude: Double
+    @NSManaged var photos: [Photo]
 
 }

@@ -8,8 +8,10 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 
 public class Photo: NSManagedObject {
-
+    
+   
 }
