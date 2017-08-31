@@ -7,3 +7,20 @@
 //
 
 import Foundation
+
+import UIKit
+import MapKit
+
+
+class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
+    
+    @IBOutlet weak var mapView: MKMapView!
+    
+    override func viewDidLoad() {
+         super.viewDidLoad()
+//         let image = UIImage(named: "icon_pin")?.withRenderingMode(.alwaysOriginal)
+        
+//         mapView.delegate = self
+    }
+
+}
