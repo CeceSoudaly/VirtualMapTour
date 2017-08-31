@@ -18,9 +18,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
          super.viewDidLoad()
-//         let image = UIImage(named: "icon_pin")?.withRenderingMode(.alwaysOriginal)
+         let image = UIImage(named: "icon_pin")?.withRenderingMode(.alwaysOriginal)
         
-//         mapView.delegate = self
+         mapView.delegate = self
     }
 
 }

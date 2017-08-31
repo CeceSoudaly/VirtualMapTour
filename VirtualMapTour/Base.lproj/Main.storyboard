@@ -24,6 +24,11 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="E5J-1Z-F6v">
                                 <rect key="frame" x="16" y="20" width="343" height="627"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Vy4-p7-XWc" appends="YES" id="lQ7-3I-hLb"/>
+                                    <outletCollection property="gestureRecognizers" destination="sUF-Ms-7lT" appends="YES" id="i9J-ua-ZjN"/>
+                                </connections>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -33,6 +38,8 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Vy4-p7-XWc"/>
+                <pinchGestureRecognizer id="sUF-Ms-7lT"/>
             </objects>
             <point key="canvasLocation" x="167" y="-22"/>
         </scene>
