@@ -21,25 +21,52 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="E5J-1Z-F6v">
+                            <mapView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="E5J-1Z-F6v">
                                 <rect key="frame" x="16" y="20" width="343" height="627"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <gestureRecognizers/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="Vy4-p7-XWc" appends="YES" id="lQ7-3I-hLb"/>
-                                    <outletCollection property="gestureRecognizers" destination="sUF-Ms-7lT" appends="YES" id="i9J-ua-ZjN"/>
+                                    <outletCollection property="gestureRecognizers" destination="8wv-rp-kbD" appends="YES" id="iyo-8K-N7x"/>
+                                    <outletCollection property="gestureRecognizers" destination="2AV-h2-2Oo" appends="YES" id="lvW-U9-dbB"/>
+                                    <outletCollection property="gestureRecognizers" destination="tGG-yl-N4Z" appends="YES" id="Rk0-oY-RNC"/>
+                                    <outletCollection property="gestureRecognizers" destination="xh8-i9-KAd" appends="YES" id="nqz-ZG-S6u"/>
+                                    <outletCollection property="gestureRecognizers" destination="spM-kQ-HdF" appends="YES" id="Baq-BE-Zee"/>
                                 </connections>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
                     </view>
                     <connections>
                         <outlet property="mapView" destination="E5J-1Z-F6v" id="S5Q-CI-czt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="Vy4-p7-XWc"/>
-                <pinchGestureRecognizer id="sUF-Ms-7lT"/>
+                <pinchGestureRecognizer id="8wv-rp-kbD">
+                    <connections>
+                        <action selector="userPinchAction:" destination="BYZ-38-t0r" id="xAS-Jz-QzT"/>
+                    </connections>
+                </pinchGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="2AV-h2-2Oo">
+                    <connections>
+                        <action selector="userDragAction:" destination="BYZ-38-t0r" id="QNj-d8-Ogg"/>
+                    </connections>
+                </panGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="tGG-yl-N4Z">
+                    <connections>
+                        <action selector="longPressAction:" destination="BYZ-38-t0r" id="rtl-HO-QRy"/>
+                    </connections>
+                </pongPressGestureRecognizer>
+                <rotationGestureRecognizer id="xh8-i9-KAd">
+                    <connections>
+                        <action selector="userRotateAction:" destination="BYZ-38-t0r" id="9ez-4s-cqs"/>
+                    </connections>
+                </rotationGestureRecognizer>
+                <tapGestureRecognizer id="spM-kQ-HdF">
+                    <connections>
+                        <action selector="userTapAction:" destination="BYZ-38-t0r" id="5MC-Jr-VQL"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="167" y="-22"/>
         </scene>
