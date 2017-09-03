@@ -12,29 +12,44 @@ import UIKit
 import MapKit
 
 
-class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
+class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate{
     
     @IBOutlet weak var mapView: MKMapView!
    
     var pinchGesture  = UIPinchGestureRecognizer()
+    let locationManager =  CLLocationManager()
     
     override func viewDidLoad() {
        
          super.viewDidLoad()
-         let image = UIImage(named: "icon_pin")?.withRenderingMode(.alwaysOriginal)
         
-         mapView.delegate = self
+        // User's location
+        locationManager.delegate = self as! CLLocationManagerDelegate
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        if #available(iOS 8.0, *) {
+            locationManager.requestAlwaysAuthorization()
+        } else {
+            // Fallback on earlier versions
+        }
+        locationManager.startUpdatingLocation()
+        
+        // add gesture recognizer
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(PhotoAlbumViewController.longPressAction(_:))) // colon needs to pass through info
+        longPress.minimumPressDuration = 1.5 // in seconds
+        //add gesture recognition
+         mapView.addGestureRecognizer(longPress)
     }
     
-    @IBAction func longPressAction(_ sender: Any) {
+    @IBAction func longPressAction(_ recognizer: UIGestureRecognizer) {
         
-        print("user had longPressAction on map",sender)
+        print("user had longPressAction on map",recognizer)
         
-        let coordinate = mapView.centerCoordinate
+        let touchedAt = recognizer.location(in: self.mapView) // adds the location on the view it was pressed
+        let touchedAtCoordinate : CLLocationCoordinate2D = mapView.convert(touchedAt, toCoordinateFrom: self.mapView) // will get coordinates
         
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = coordinate
-        mapView.addAnnotation(annotation)
+        let newPin = MKPointAnnotation()
+        newPin.coordinate = touchedAtCoordinate
+        mapView.addAnnotation(newPin)
     }
     
     
@@ -46,8 +61,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         sender.scale = 1.0
         
         print("user had pinch !!!",sender)
-        
-       
         
     }
     
