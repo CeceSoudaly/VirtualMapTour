@@ -10,6 +10,7 @@ import Foundation
 
 import UIKit
 import MapKit
+import CoreData
 
 
 class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate{
@@ -80,7 +81,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         
         
-        mapView.addAnnotation(newPin)
+//        mapView.addAnnotation(newPin)
+        self.addAnnotation(locationPoint: touchedAtCoordinate)
+        
     }
     
     func getMapLocationFromAnnotation(annotation:MKAnnotation) -> Location? {
@@ -178,25 +181,27 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             
         })
     }
+    
     func addMapLocation(annotation:MKAnnotation) {
-//        let locationDictionary: [String : AnyObject] = [
-//            Location.Keys.Latitude : annotation.coordinate.latitude,
-//            Location.Keys.Longitude : annotation.coordinate.longitude,
-//            Location.Keys.Title: annotation.title!,
-//            Location.Keys.Subtitle: annotation.subtitle!
-//        ]
-//        let locationToBeAdded = Location(dictionary: locationDictionary, context: sharedContext)
-//        self.locations.append(locationToBeAdded)
+        let locationDictionary: [String : AnyObject] = [
+            Location.Keys.Latitude : annotation.coordinate.latitude as AnyObject,
+            Location.Keys.Longitude : annotation.coordinate.longitude as AnyObject,
+            Location.Keys.Title: annotation.title! as AnyObject,
+            Location.Keys.Subtitle: annotation.subtitle! as AnyObject
+        ]
+        
+        let locationToBeAdded = Location(dictionary: locationDictionary, context: sharedContext)
+        self.locations.append(locationToBeAdded)
 //        CoreDataStackManager.sharedInstance().saveContext()
         
-        //Pre-Fetch photos entites related to this location and save to core data
+//        Pre-Fetch photos entites related to this location and save to core data
         
-//        FlickrClient.sharedInstance().prefetchPhotosForLocationAndSaveToDataContext(locationToBeAdded) {
-//            error in
-//            if let errorMessage = error {
-//                println(errorMessage.localizedDescription)
-//            }
-//        }
+        FlickrClient.sharedInstance().prefetchPhotosForLocationAndSaveToDataContext(location: locationToBeAdded) {
+            error in
+            if let errorMessage = error {
+                print(errorMessage.localizedDescription)
+            }
+        }
         
     }
     
@@ -224,6 +229,12 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             pinView!.annotation = annotation
         }
         return pinView
+    }
+    
+    //MARK:- Core Data Operations
+    
+    var sharedContext: NSManagedObjectContext {
+        return CoreDataStackManager.sharedInstance().context
     }
 
 }
