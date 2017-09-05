@@ -13,23 +13,23 @@ import CoreData
 extension Photo {
 
 
-    
-    // Core data object attributes
-    @NSManaged var id: String
-    @NSManaged var title: String
-    @NSManaged var imageUrl: String
-    @NSManaged var downloadStatus: Bool
-    @NSManaged var location: Location
-    @NSManaged var pageNumber: NSNumber
-    
-    // Keys to convert dictionary into object
-    struct Keys {
-        static let Id = "id"
-        static let Name = "title"
-        static let ImageUrl = "url_m"
-        static let DownloadStatus = "downloadStatus"
-        static let PageNumber = "pageNumber"
-    }
+//    
+//    // Core data object attributes
+//    @NSManaged var id: String
+//    @NSManaged var title: String
+//    @NSManaged var imageUrl: String
+//    @NSManaged var downloadStatus: Bool
+//    @NSManaged var location: Location
+//    @NSManaged var pageNumber: NSNumber
+//    
+//    // Keys to convert dictionary into object
+//    struct Keys {
+//        static let Id = "id"
+//        static let Name = "title"
+//        static let ImageUrl = "url_m"
+//        static let DownloadStatus = "downloadStatus"
+//        static let PageNumber = "pageNumber"
+//    }
     
     // Init method to insert object in core data
     //    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {

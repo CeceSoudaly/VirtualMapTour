@@ -13,11 +13,11 @@ import CoreData
 extension Location {
 
     
-    // Core data object attributes
-    @NSManaged var title: String
-    @NSManaged var subtitle: String
-    @NSManaged var latitude: Double
-    @NSManaged var longitude: Double
-    @NSManaged var photos: [Photo]
+//    // Core data object attributes
+//    @NSManaged var title: String
+//    @NSManaged var subtitle: String
+//    @NSManaged var latitude: Double
+//    @NSManaged var longitude: Double
+//    @NSManaged var photos: [Photo]
 
 }
