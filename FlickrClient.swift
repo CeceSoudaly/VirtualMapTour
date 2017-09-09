@@ -27,6 +27,9 @@ class FlickrClient : NSObject {
         //Build URL and configure Request
         let urlString = Constant.BaseURL  + FlickrClient.escapedParameters(parameters: mutableParameters)
         let url1 = URL(string: urlString)!
+        
+        print("make the request", url1)
+        
         let request = URLRequest(url: url1 as URL)
         
         //Make the Request
@@ -36,7 +39,7 @@ class FlickrClient : NSObject {
                 let newError = FlickrClient.manageErrors(data: data as NSData?, response: response, error: error as NSError?, completionHandler: completionHandler)
                 completionHandler(data as AnyObject, nil)
             } else {
-                FlickrClient.parseJSONWithmpletionHandler(data: data as! NSData, completionHandler: completionHandler)
+                FlickrClient.parseJSONWithmpletionHandler(data: data! as NSData, completionHandler: completionHandler)
             }
         }
         //Start the request
