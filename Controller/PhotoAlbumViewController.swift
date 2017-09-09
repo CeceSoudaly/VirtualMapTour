@@ -183,12 +183,17 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     }
     
     func addMapLocation(annotation:MKAnnotation) {
+        
+        Location.Keys.Latitude
+        
         let locationDictionary: [String : AnyObject] = [
             Location.Keys.Latitude : annotation.coordinate.latitude as AnyObject,
             Location.Keys.Longitude : annotation.coordinate.longitude as AnyObject,
             Location.Keys.Title: annotation.title! as AnyObject,
             Location.Keys.Subtitle: annotation.subtitle! as AnyObject
         ]
+        
+        print("Longitude  === >",locationDictionary[Location.Keys.Longitude])
         
         let locationToBeAdded = Location(dictionary: locationDictionary, context: sharedContext)
         self.locations.append(locationToBeAdded)
