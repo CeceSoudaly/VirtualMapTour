@@ -33,6 +33,10 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     let newPin = MKPointAnnotation()
     
+    let moc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var fr: NSFetchRequest<Location> = Location.fetchRequest()
+    var application = (UIApplication.shared.delegate as! AppDelegate)
+    
     // All static varibales used to save data
     struct Keys {
         static let Latitude = "latitude"
@@ -101,17 +105,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         return nil
     }
     
-    
-    
-//    @IBAction func userPinchAction(_ sender: UIPinchGestureRecognizer) {
-//        
-//        self.view.bringSubview(toFront: mapView)
-//        sender.view?.transform = (sender.view?.transform)!.scaledBy(x: sender.scale, y: sender.scale)
-//        sender.scale = 1.0
-//        
-//        print("user had pinch !!!",sender)
-//        
-//    }
+
     
     @IBAction func userDragAction(_ sender: UIPanGestureRecognizer) {
         
@@ -134,10 +128,10 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     @IBAction func userTapAction(_ sender: Any) {
         
         print("TapAction get the coordinates of the location!!!",sender)
-    //latitude:Double,longitude:Double, nextPageNumber
         print("latituden on map",newPin.coordinate.latitude)
         print("longitudeon map",newPin.coordinate.longitude)
         
+        //when tap make use its on a pin
       
     }
     
@@ -193,20 +187,27 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             Location.Keys.Subtitle: annotation.subtitle! as AnyObject
         ]
         
-        print("Longitude  === >",locationDictionary[Location.Keys.Longitude])
         
         let locationToBeAdded = Location(dictionary: locationDictionary, context: sharedContext)
         self.locations.append(locationToBeAdded)
-//        CoreDataStackManager.sharedInstance().saveContext()
+        
+        let entityDescription = NSEntityDescription.entity(forEntityName: "Location", in: self.moc)
+        let location = Location(entity: entityDescription!, insertInto: self.moc)
+        location.latitude = annotation.coordinate.latitude
+        location.longitude = annotation.coordinate.longitude
+        
+        print("Save location to core data >")
+        self.application.saveContext()
+        
         
 //        Pre-Fetch photos entites related to this location and save to core data
         
-        FlickrClient.sharedInstance().prefetchPhotosForLocationAndSaveToDataContext(location: locationToBeAdded) {
-            error in
-            if let errorMessage = error {
-                print(errorMessage.localizedDescription)
-            }
-        }
+//        FlickrClient.sharedInstance().prefetchPhotosForLocationAndSaveToDataContext(location: locationToBeAdded) {
+//            error in
+//            if let errorMessage = error {
+//                print(errorMessage.localizedDescription)
+//            }
+//        }
         
     }
     

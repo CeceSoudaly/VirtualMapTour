@@ -27,7 +27,7 @@ class CoreDataStackManager {
     //MARK:- SharedInstance
     class func sharedInstance()-> CoreDataStackManager {
         struct Static {
-            static let instance = CoreDataStackManager(modelName: "")
+            static let instance = CoreDataStackManager(modelName: "Model")
         }
         return Static.instance!
     }
