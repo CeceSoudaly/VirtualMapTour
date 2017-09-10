@@ -10,28 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "526699370.029331"
+            timestampString = "526706410.630472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
-            landmarkName = "longPressAction(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "526699370.029331"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "130"
-            endingLineNumber = "130"
-            landmarkName = "userTapAction(_:)"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
+            landmarkName = "getMapLocationFromAnnotation(annotation:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,7 +42,7 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/FlickrCoreDataManager.swift"
-                  timestampString = "526700582.744791"
+                  timestampString = "526706411.724777"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "31"
@@ -73,7 +57,7 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/FlickrCoreDataManager.swift"
-                  timestampString = "526700582.745981"
+                  timestampString = "526706411.72625"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "31"
@@ -90,29 +74,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "526699370.029331"
+            timestampString = "526706410.630472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
-            landmarkName = "addMapLocation(annotation:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "526699370.029331"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
             landmarkName = "addAnnotation(locationPoint:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VirtualMapTour.PhotoAlbumViewController.addAnnotation (locationPoint : __C.CLLocationCoordinate2D) -&gt; ()"
+                  moduleName = "VirtualMapTour"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/Controller/PhotoAlbumViewController.swift"
+                  timestampString = "526706411.729532"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "194"
+                  endingLineNumber = "194"
+                  offsetFromSymbolStart = "924">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VirtualMapTour.PhotoAlbumViewController.(addAnnotation (locationPoint : __C.CLLocationCoordinate2D) -&gt; ()).(closure #1)"
+                  moduleName = "VirtualMapTour"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/Controller/PhotoAlbumViewController.swift"
+                  timestampString = "526706411.731035"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "187"
+                  endingLineNumber = "187"
+                  offsetFromSymbolStart = "28">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -122,28 +122,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "526699370.029331"
+            timestampString = "526706410.630472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
-            landmarkName = "longPressAction(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "526699370.029331"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
-            landmarkName = "addAnnotation(locationPoint:)"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
+            landmarkName = "userDragAction(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -202,7 +186,7 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/FlickrClient.swift"
-                  timestampString = "526700582.763082"
+                  timestampString = "526706411.74062"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "36"
@@ -217,7 +201,7 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/FlickrClient.swift"
-                  timestampString = "526700582.764681"
+                  timestampString = "526706411.741844"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "38"
@@ -266,7 +250,7 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/FlickrClient.swift"
-                  timestampString = "526700582.770112"
+                  timestampString = "526706411.747152"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "62"
@@ -281,7 +265,7 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/FlickrClient.swift"
-                  timestampString = "526700582.771294"
+                  timestampString = "526706411.748317"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "62"
@@ -362,13 +346,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "526699370.029331"
+            timestampString = "526706410.630472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "191"
-            endingLineNumber = "191"
-            landmarkName = "addMapLocation(annotation:)"
+            startingLineNumber = "200"
+            endingLineNumber = "200"
+            landmarkName = "addAnnotation(locationPoint:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VirtualMapTour.PhotoAlbumViewController.(addAnnotation (locationPoint : __C.CLLocationCoordinate2D) -&gt; ()).(closure #1)"
+                  moduleName = "VirtualMapTour"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/Controller/PhotoAlbumViewController.swift"
+                  timestampString = "526706411.760081"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "201"
+                  endingLineNumber = "201"
+                  offsetFromSymbolStart = "440">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VirtualMapTour.PhotoAlbumViewController.(addAnnotation (locationPoint : __C.CLLocationCoordinate2D) -&gt; ()).(closure #1)"
+                  moduleName = "VirtualMapTour"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/Controller/PhotoAlbumViewController.swift"
+                  timestampString = "526706411.761336"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "201"
+                  endingLineNumber = "201"
+                  offsetFromSymbolStart = "1232">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -378,13 +394,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "526700581.653506"
+            timestampString = "526706410.630472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
-            landmarkName = "addMapLocation(annotation:)"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
+            landmarkName = "addAnnotation(locationPoint:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VirtualMapTour.PhotoAlbumViewController.(addAnnotation (locationPoint : __C.CLLocationCoordinate2D) -&gt; ()).(closure #1)"
+                  moduleName = "VirtualMapTour"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/Controller/PhotoAlbumViewController.swift"
+                  timestampString = "526706411.764182"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "210"
+                  endingLineNumber = "210"
+                  offsetFromSymbolStart = "916">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "VirtualMapTour.PhotoAlbumViewController.(addAnnotation (locationPoint : __C.CLLocationCoordinate2D) -&gt; ()).(closure #1).(closure #1)"
+                  moduleName = "VirtualMapTour"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/Controller/PhotoAlbumViewController.swift"
+                  timestampString = "526706411.765497"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "187"
+                  endingLineNumber = "187"
+                  offsetFromSymbolStart = "24">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JH9-Tz-cFN">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -26,7 +26,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <gestureRecognizers/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="8wv-rp-kbD" appends="YES" id="iyo-8K-N7x"/>
                                     <outletCollection property="gestureRecognizers" destination="2AV-h2-2Oo" appends="YES" id="lvW-U9-dbB"/>
                                     <outletCollection property="gestureRecognizers" destination="tGG-yl-N4Z" appends="YES" id="Rk0-oY-RNC"/>
                                     <outletCollection property="gestureRecognizers" destination="xh8-i9-KAd" appends="YES" id="nqz-ZG-S6u"/>
@@ -37,16 +36,12 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                     </view>
+                    <navigationItem key="navigationItem" id="XKs-TF-Xgj"/>
                     <connections>
                         <outlet property="mapView" destination="E5J-1Z-F6v" id="S5Q-CI-czt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <pinchGestureRecognizer id="8wv-rp-kbD">
-                    <connections>
-                        <action selector="userPinchAction:" destination="BYZ-38-t0r" id="xAS-Jz-QzT"/>
-                    </connections>
-                </pinchGestureRecognizer>
                 <panGestureRecognizer minimumNumberOfTouches="1" id="2AV-h2-2Oo">
                     <connections>
                         <action selector="userDragAction:" destination="BYZ-38-t0r" id="QNj-d8-Ogg"/>
@@ -68,7 +63,23 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="167" y="-22"/>
+            <point key="canvasLocation" x="890" y="12"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="3gU-dt-Zj6">
+            <objects>
+                <navigationController id="JH9-Tz-cFN" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="A84-Fk-6ib">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="ObC-08-omS"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JXw-WF-Z6n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="49" y="11"/>
         </scene>
     </scenes>
 </document>

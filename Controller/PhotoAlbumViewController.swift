@@ -33,8 +33,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     let newPin = MKPointAnnotation()
     
-    let moc = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var fr: NSFetchRequest<Location> = Location.fetchRequest()
+    let dbPersistence = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
     var application = (UIApplication.shared.delegate as! AppDelegate)
     
     // All static varibales used to save data
@@ -52,6 +52,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     override func viewDidLoad() {
        
          super.viewDidLoad()
+
         
         // User's location
         locationManager.delegate = self as! CLLocationManagerDelegate
@@ -63,12 +64,54 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         }
         locationManager.startUpdatingLocation()
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Edit",style: .plain, target: self, action: #selector(deleteLocation))
+        
+        
         // add gesture recognizer
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(PhotoAlbumViewController.longPressAction(_:))) // colon needs to pass through info
         longPress.minimumPressDuration = 1.5 // in seconds
         //add gesture recognition
          mapView.addGestureRecognizer(longPress)
+        
+        //load the save pin location
+        
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        
+        let data:[Location]!
+        do{
+            data = try self.dbPersistence.fetch(self.fetchRequest)
+        }
+        catch{
+            
+            print("unable to retrieve data")
+            return
+        }
+        
+        if data.count > 0
+        {
+            for items in data
+            {
+                let lat = items.latitude
+                let long = items.longitude
+                let coordinates = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = coordinates
+                mapView.removeAnnotation(annotation)
+                mapView.addAnnotation(annotation)
+            }
+        }
+        
+        mapView.reloadInputViews()
+    }
+    
+    func deleteLocation(){
+        //
+          print("deleteLocation action...")
+    }
+    
     
     @IBAction func longPressAction(_ recognizer: UIGestureRecognizer) {
         
@@ -191,8 +234,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         let locationToBeAdded = Location(dictionary: locationDictionary, context: sharedContext)
         self.locations.append(locationToBeAdded)
         
-        let entityDescription = NSEntityDescription.entity(forEntityName: "Location", in: self.moc)
-        let location = Location(entity: entityDescription!, insertInto: self.moc)
+        let entityDescription = NSEntityDescription.entity(forEntityName: "Location", in: self.dbPersistence)
+        let location = Location(entity: entityDescription!, insertInto: self.dbPersistence)
         location.latitude = annotation.coordinate.latitude
         location.longitude = annotation.coordinate.longitude
         
