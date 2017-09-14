@@ -37,6 +37,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     var fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
     var application = (UIApplication.shared.delegate as! AppDelegate)
     
+     static var stateFlag = "none"
+    
     // All static varibales used to save data
     struct Keys {
         static let Latitude = "latitude"
@@ -64,7 +66,10 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         }
         locationManager.startUpdatingLocation()
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Done",style: .plain, target: self, action: #selector(doneLocation))
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Edit",style: .plain, target: self, action: #selector(deleteLocation))
+        
         
         
         // add gesture recognizer
@@ -107,9 +112,14 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         mapView.reloadInputViews()
     }
     
-    func deleteLocation(){
-        //
-          print("deleteLocation action...")
+    
+    func deleteLocation() -> Void {
+        PhotoAlbumViewController.stateFlag = "delete";
+    }
+    
+    
+    func doneLocation() -> Void {
+        PhotoAlbumViewController.stateFlag = "done";
     }
     
     
@@ -169,13 +179,35 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     }
     
     @IBAction func userTapAction(_ sender: Any) {
+    
+        print("current state of the program ", PhotoAlbumViewController.stateFlag)
         
-        print("TapAction get the coordinates of the location!!!",sender)
-        print("latituden on map",newPin.coordinate.latitude)
-        print("longitudeon map",newPin.coordinate.longitude)
+       //when tap make use its on a pin
+       if(PhotoAlbumViewController.stateFlag == "delete")
+       {
+          print("Delete the location",newPin.coordinate.longitude)
+        // Remove annotation
+            self.mapView.removeAnnotation(self.annotaionToUpdate!)
+            
+            if let locationToDelete = locationToUpdate {
+                
+                //Remove location from array
+                let index = (self.locations as NSArray).index(of: locationToDelete)
+                self.locations.remove(at: index)
+                
+                //Remove location from context
+                sharedContext.delete(locationToDelete)
+                //CoreDataStackManager.sharedInstance().saveContext()
+            }
+            locationToUpdate = nil
+            annotaionToUpdate = nil
         
-        //when tap make use its on a pin
-      
+       } else if(PhotoAlbumViewController.stateFlag == "done")
+       {
+             print("Back to normal",newPin.coordinate.longitude)
+       }
+        
+        
     }
     
     
