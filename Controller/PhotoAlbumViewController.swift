@@ -197,8 +197,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
                 
                 //Remove location from context
                 sharedContext.delete(locationToDelete)
-                //CoreDataStackManager.sharedInstance().saveContext()
+                 self.application.saveContext()
             }
+        
             locationToUpdate = nil
             annotaionToUpdate = nil
         
