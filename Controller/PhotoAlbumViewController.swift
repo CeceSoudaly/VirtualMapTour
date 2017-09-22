@@ -33,7 +33,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
   
     let newPin = MKPointAnnotation()
     
-    let dbPersistence = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
 
     var application = (UIApplication.shared.delegate as! AppDelegate)
@@ -85,7 +84,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         let data:[Location]!
         do{
-            data = try self.dbPersistence.fetch(self.fetchRequest)
+            data = try self.sharedContext.fetch(self.fetchRequest)
         }
         catch{
             
@@ -175,20 +174,18 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
     }
     
-    
     func delete() {
         var error:NSError? = nil
         
         var results:[Location]!
         
         do{
-            results = try self.dbPersistence.fetch(self.fetchRequest)
+            results = fetchAllLocations()
             
             print("size of the results...",results.count)
             
             for objectDelete in results {
-               dbPersistence.delete(objectDelete)
-                self.application.saveContext()
+               sharedContext.delete(objectDelete)
             }
         }
         catch{
@@ -197,7 +194,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             
         }
         self.application.saveContext()
- 
     }
     
     func fetchAllLocations() -> [Location] {
@@ -205,10 +201,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         var results:[Location]!
         do{
                 //Create the fetch request
-//                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Location")
-                results = try sharedContext.fetch(fetchRequest) as! [Location]
-
-            }
+                results = try self.sharedContext.fetch(self.fetchRequest)
+         }
             catch{
 
                 print("Error in fetchAllLocations")
@@ -228,10 +222,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             Location.Keys.Subtitle: annotation.subtitle! as AnyObject
         ]
        
-        return Location(dictionary: locationDictionary, context: sharedContext)
-        
+        return Location(dictionary: locationDictionary, context: self.sharedContext)
     }
-    
     
     // Add pin annotation after long press gesture
     func addAnnotation(locationPoint:CLLocationCoordinate2D) {
@@ -328,12 +320,11 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             Location.Keys.Subtitle: annotation.subtitle! as AnyObject
         ]
         
-        
         let locationToBeAdded = Location(dictionary: locationDictionary, context: sharedContext)
         self.locations.append(locationToBeAdded)
         
-        let entityDescription = NSEntityDescription.entity(forEntityName: "Location", in: self.dbPersistence)
-        let location = Location(entity: entityDescription!, insertInto: self.dbPersistence)
+        let entityDescription = NSEntityDescription.entity(forEntityName: "Location", in: self.sharedContext)
+        let location = Location(entity: entityDescription!, insertInto: self.sharedContext)
         location.latitude = annotation.coordinate.latitude
         location.longitude = annotation.coordinate.longitude
         
@@ -341,15 +332,11 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         self.application.saveContext()
       
     }
-    
-    
+   
     //MARK:- Core Data Operations
-    
     var sharedContext: NSManagedObjectContext {
-        return CoreDataStackManager.sharedInstance().context
-
-    }
-
+        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+   }
 }
 
 extension PhotoAlbumViewController {

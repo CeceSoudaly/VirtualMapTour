@@ -26,7 +26,7 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/FlickrCoreDataManager.swift"
-                  timestampString = "527739526.44962"
+                  timestampString = "527744180.074413"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "31"
@@ -41,7 +41,7 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/FlickrCoreDataManager.swift"
-                  timestampString = "527739526.451012"
+                  timestampString = "527744180.075829"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "31"
@@ -49,22 +49,6 @@
                   offsetFromSymbolStart = "40">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "model/Location.swift"
-            timestampString = "526612942.864716"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
-            landmarkName = "init(dictionary:context:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -106,7 +90,7 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/FlickrClient.swift"
-                  timestampString = "527739526.464525"
+                  timestampString = "527744180.081909"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "36"
@@ -121,7 +105,7 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/FlickrClient.swift"
-                  timestampString = "527739526.465712"
+                  timestampString = "527744180.083183"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "38"
@@ -234,43 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "527739526.375371"
+            timestampString = "527744179.987236"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "228"
-            endingLineNumber = "228"
-            landmarkName = "getMapLocationFromAnnotation(annotation:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "527739526.375928"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
-            landmarkName = "getMapLocationFromAnnotation(annotation:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "527739526.37634"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "404"
-            endingLineNumber = "404"
+            startingLineNumber = "378"
+            endingLineNumber = "378"
             landmarkName = "mapView(_:annotationView:didChange:fromOldState:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -282,43 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "527739526.37674"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
-            landmarkName = "userTapAction(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "527739526.377136"
+            timestampString = "527744179.987762"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "392"
             endingLineNumber = "392"
-            landmarkName = "mapView(_:annotationView:didChange:fromOldState:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "527739526.377518"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "406"
-            endingLineNumber = "406"
             landmarkName = "mapView(mapView:annotationView:calloutAccessoryControlTapped:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -330,27 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "527739526.377904"
+            timestampString = "527744179.98817"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "313"
-            endingLineNumber = "313"
-            landmarkName = "removeMapLocation()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "527739526.378296"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
             landmarkName = "delete()"
             landmarkType = "7">
          </BreakpointContent>
@@ -362,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "527739526.378681"
+            timestampString = "527744179.988568"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
             landmarkName = "userTapAction(_:)"
             landmarkType = "7">
          </BreakpointContent>
