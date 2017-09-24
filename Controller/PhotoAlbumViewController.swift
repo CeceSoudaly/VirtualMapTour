@@ -29,6 +29,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     // Pin is updated when pin is dragged from one location to another
     var annotaionToUpdate: MKAnnotation?
     
+    var annotationView: MKAnnotationView?
+    
     var locations = [Location]()
   
     let newPin = MKPointAnnotation()
@@ -55,6 +57,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
        
          super.viewDidLoad()
 
+        mapView.delegate = self
         
         // User's location
         locationManager.delegate = self as! CLLocationManagerDelegate
@@ -76,8 +79,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         //add gesture recognition
         mapView.addGestureRecognizer(longPress)
        
-        mapView.delegate = self
-        
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -144,36 +146,37 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
      tap delete
     **/
     
-    @IBAction func userTapAction(_ recognizer: UIGestureRecognizer) {
-    
-       print("current state of the program ", PhotoAlbumViewController.stateFlag)
-        
-        
-       //when tap make use its on a pin
-       if(PhotoAlbumViewController.stateFlag == "delete")
-       {
-        
-        let touchedAt = recognizer.location(in: self.mapView) // adds the location on the view it was pressed
-        let touchedAtCoordinate : CLLocationCoordinate2D = mapView.convert(touchedAt, toCoordinateFrom: self.mapView) // will get coordinates
-        
-        
-        newPin.coordinate = touchedAtCoordinate
-        
-        print("latituden on map",newPin.coordinate.latitude)
-        print("longitudeon map",newPin.coordinate.longitude)
-        print("Delete the location",newPin.coordinate)
-        
-        delete() 
-        locationToUpdate = nil
-        annotaionToUpdate = nil
-        
-       } else if(PhotoAlbumViewController.stateFlag == "done")
-       {
-             print("Back to normal",newPin.coordinate.longitude)
-       }
-        
-    }
-    
+//    @IBAction func userTapAction(_ recognizer: UIGestureRecognizer) {
+//
+//       print("current state of the program ", PhotoAlbumViewController.stateFlag)
+//
+//
+//       //when tap make use its on a pin
+//       if(PhotoAlbumViewController.stateFlag == "delete")
+//       {
+//
+//        let touchedAt = recognizer.location(in: self.mapView) // adds the location on the view it was pressed
+//        let touchedAtCoordinate : CLLocationCoordinate2D = mapView.convert(touchedAt, toCoordinateFrom: self.mapView) // will get coordinates
+//
+//
+//        newPin.coordinate = touchedAtCoordinate
+//
+//        print("latituden on map",newPin.coordinate.latitude)
+//        print("longitudeon map",newPin.coordinate.longitude)
+//        print("Delete the location",newPin.coordinate)
+//
+//        delete()
+//        locationToUpdate = nil
+//        annotaionToUpdate = nil
+//
+//       } else if(PhotoAlbumViewController.stateFlag == "done")
+//       {
+//             print("Back to normal",newPin.coordinate.longitude)
+//       }
+//        
+//  
+//    }
+//    
     func delete() {
         var error:NSError? = nil
         
@@ -289,17 +292,17 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         // Remove annotation
         print("self.annotaionToUpdate",self.annotaionToUpdate)
         print("locationToDelete",locationToUpdate)
-        
+
         self.mapView.removeAnnotation(self.annotaionToUpdate!)
         self.locations = fetchAllLocations()
-        
+
         if let locationToDelete = locationToUpdate {
-            
+
             //Remove location from array
             let index = (self.locations as NSArray).index(of: locationToUpdate)
-            
+
             self.locations.remove(at: index)
-            
+
             //Remove location from context
             sharedContext.delete(locationToUpdate!)
             self.application.saveContext()
@@ -356,18 +359,21 @@ extension PhotoAlbumViewController {
             pinView!.pinColor = MKPinAnnotationColor.red
            
             //Right call out button to display Flickr images
-            pinView!.rightCalloutAccessoryView =  UIButton(type: UIButtonType.detailDisclosure)
-            
+//            pinView!.rightCalloutAccessoryView =  UIButton(type: UIButtonType.detailDisclosure)
+//
             //  Left call out button as delete pin button
             let deleteLocationButton = UIButton(type: UIButtonType.system)
-            deleteLocationButton.frame = CGRect(x:0, y:0, width:20, height:20)
-            deleteLocationButton.setImage(UIImage(named: "deleteLocation"), for: UIControlState.normal)
-            pinView?.leftCalloutAccessoryView = deleteLocationButton
-           
+            deleteLocationButton.frame = CGRect(x:0, y:0, width:200, height:300)
+//            deleteLocationButton.setImage(UIImage(named: "deleteLocation"), for: UIControlState.normal)
+//            deleteLocationButton.backgroundColor = UIColor.cyan
+//            pinView?.leftCalloutAccessoryView = deleteLocationButton
+            pinView!.rightCalloutAccessoryView =  deleteLocationButton
+            pinView?.isEnabled = true
             annotaionToUpdate = pinView?.annotation
             
         } else {
             pinView!.annotation = annotation as! MKAnnotation
+            
         }
         return pinView
     }
@@ -387,19 +393,37 @@ extension PhotoAlbumViewController {
         }
     }
     
-    func mapView(mapView: MKMapView!, annotationView view: MKPinAnnotationView!, calloutAccessoryControlTapped control: UIControl!) {
-        
-        if control == view.rightCalloutAccessoryView {
-            // Show flickr images on right call out
-            performSegue(withIdentifier: "showAlbum", sender: view)
-            
-        } else if control == view.leftCalloutAccessoryView {
-            
-            // Delete annotation and location on left call out
-            locationToUpdate = getMapLocationFromAnnotation(annotation: view.annotation!)
-            annotaionToUpdate = view.annotation
-            removeMapLocation()
-        }
-    }
+
+//  func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!)
+//  {
+//
+//        if control == view.rightCalloutAccessoryView {
+//            // Show flickr images on right call out
+//            performSegue(withIdentifier: "showAlbum", sender: view)
+//
+//        } else if control == view.leftCalloutAccessoryView {
+//
+//            // Delete annotation and location on left call out
+//            locationToUpdate = getMapLocationFromAnnotation(annotation: view.annotation!)
+//            annotaionToUpdate = view.annotation
+//            removeMapLocation()
+//        }
+//    }
     
+    func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!)
+    {
+        
+        print("disclosure pressed on: \(String(describing: view.annotation?.title))")
+        
+    }
+   
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
+         print("disclosure pressed on: \(String(describing: view.annotation?.title))")
+        // first ensure that it really is an EventAnnotation:
+//        if let eventAnnotation = view.annotation as? EventAnnotation {
+//            let theEvent = eventAnnotation.myEvent
+//            // now do somthing with your event
+//        }
+    }
 }
