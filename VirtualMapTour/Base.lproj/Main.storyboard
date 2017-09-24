@@ -29,6 +29,7 @@
                                     <outletCollection property="gestureRecognizers" destination="2AV-h2-2Oo" appends="YES" id="lvW-U9-dbB"/>
                                     <outletCollection property="gestureRecognizers" destination="tGG-yl-N4Z" appends="YES" id="Rk0-oY-RNC"/>
                                     <outletCollection property="gestureRecognizers" destination="xh8-i9-KAd" appends="YES" id="nqz-ZG-S6u"/>
+                                    <outletCollection property="gestureRecognizers" destination="t9S-iG-hLI" appends="YES" id="4GI-NU-e46"/>
                                 </connections>
                             </mapView>
                         </subviews>
@@ -56,6 +57,11 @@
                         <action selector="userRotateAction:" destination="BYZ-38-t0r" id="9ez-4s-cqs"/>
                     </connections>
                 </rotationGestureRecognizer>
+                <tapGestureRecognizer id="t9S-iG-hLI">
+                    <connections>
+                        <action selector="userTapAction:" destination="BYZ-38-t0r" id="mCF-5a-vvc"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="890" y="12"/>
         </scene>

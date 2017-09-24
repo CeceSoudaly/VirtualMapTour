@@ -49,7 +49,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         static let LongitudeDelta = "longitudeDelta"
         static let mapFileName = "mapRegionArchive"
         static let pinTitle = "Dropped Pin"
-        static let pinSubtitle = "Address Unknown"
+        static let pinSubtitle = "Address Unknown!"
         static let pinCellId = "travelLocationPinId"
     }
     
@@ -158,7 +158,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
 //        let touchedAt = recognizer.location(in: self.mapView) // adds the location on the view it was pressed
 //        let touchedAtCoordinate : CLLocationCoordinate2D = mapView.convert(touchedAt, toCoordinateFrom: self.mapView) // will get coordinates
 //
-//
 //        newPin.coordinate = touchedAtCoordinate
 //
 //        print("latituden on map",newPin.coordinate.latitude)
@@ -173,10 +172,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
 //       {
 //             print("Back to normal",newPin.coordinate.longitude)
 //       }
-//        
 //  
 //    }
-//    
+    
     func delete() {
         var error:NSError? = nil
         
@@ -207,9 +205,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
                 results = try self.sharedContext.fetch(self.fetchRequest)
          }
             catch{
-
                 print("Error in fetchAllLocations")
-
             }
             self.application.saveContext()
             return results
@@ -248,8 +244,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
                     
                     // Update the annotation subtitle if we get the address
                     let topPlaceMark = placemark?.last as! CLPlacemark
-//                    var annotationSubtitle = self.creareSubtitleFromPlacemark(topPlaceMark)
-//                    newAnnotation!.subtitle = annotationSubtitle
+                    var annotationSubtitle = self.creareSubtitleFromPlacemark(placemark: topPlaceMark)
+                    newAnnotation!.subtitle = annotationSubtitle
+                    newAnnotation!.title = annotationSubtitle
                 }
             }
             
@@ -266,6 +263,34 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             }
             
         })
+    }
+    
+    //Helper method to create address from placemark object
+    func creareSubtitleFromPlacemark(placemark:CLPlacemark) -> String {
+        var addressComponents = [String]()
+        
+        addressComponents = appendComponentIfNotNil(addressComponent: placemark.inlandWater, addressComponents: addressComponents)
+        addressComponents = appendComponentIfNotNil(addressComponent: placemark.ocean, addressComponents: addressComponents)
+        addressComponents = appendComponentIfNotNil(addressComponent: placemark.subThoroughfare, addressComponents: addressComponents)
+        addressComponents = appendComponentIfNotNil(addressComponent: placemark.thoroughfare, addressComponents: addressComponents)
+        addressComponents = appendComponentIfNotNil(addressComponent: placemark.locality, addressComponents: addressComponents)
+        addressComponents = appendComponentIfNotNil(addressComponent: placemark.administrativeArea, addressComponents: addressComponents)
+        addressComponents = appendComponentIfNotNil(addressComponent: placemark.postalCode, addressComponents: addressComponents)
+        addressComponents = appendComponentIfNotNil(addressComponent:placemark.country, addressComponents: addressComponents)
+        
+        if addressComponents.isEmpty {
+            return Keys.pinSubtitle
+        }
+        var completeAddress = addressComponents.flatMap({$0}).joined()
+        return completeAddress
+    }
+    
+    func appendComponentIfNotNil(addressComponent:String?, addressComponents :[String]) -> [String] {
+        var addressComponents = addressComponents
+        if let component = addressComponent {
+            addressComponents.append(component)
+        }
+        return addressComponents
     }
     //MARK:- MapView and MapRegion
     
@@ -355,7 +380,7 @@ extension PhotoAlbumViewController {
             pinView = MKPinAnnotationView(annotation: annotation as! MKAnnotation, reuseIdentifier: reusableMapId)
             pinView!.isDraggable = true
             pinView!.animatesDrop = true
-            pinView!.canShowCallout = true
+            //pinView!.canShowCallout = true
             pinView!.pinColor = MKPinAnnotationColor.red
            
             //Right call out button to display Flickr images
