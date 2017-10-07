@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>$(VirtualMapTour)</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -37,6 +37,8 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
     <key>NSLocationUsageDescription</key>
-    <string>$(PRODUCT_NAME) location use.</string>
+    <string>$(VirtualMapTour) location use.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>$(VirtualMapTour) location use.</string>
 </dict>
 </plist>

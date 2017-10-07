@@ -78,6 +78,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         longPress.minimumPressDuration = 1.5 // in seconds
         //add gesture recognition
         mapView.addGestureRecognizer(longPress)
+        
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleTap))
+        mapView.addGestureRecognizer(panGestureRecognizer)
        
     
     }
@@ -111,7 +114,10 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         mapView.reloadInputViews()
     }
     
-    
+    func handleTap(panGesture: UIPanGestureRecognizer) {
+         print("user had tap  !!! ",panGesture)
+    }
+
     func deleteLocation() -> Void {
         PhotoAlbumViewController.stateFlag = "delete";
     }
@@ -146,10 +152,10 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
      tap delete
     **/
     
-//    @IBAction func userTapAction(_ recognizer: UIGestureRecognizer) {
-//
-//       print("current state of the program ", PhotoAlbumViewController.stateFlag)
-//
+    @IBAction func userTapAction(_ recognizer: UIGestureRecognizer) {
+
+       print("current state of the program ", PhotoAlbumViewController.stateFlag)
+
 //
 //       //when tap make use its on a pin
 //       if(PhotoAlbumViewController.stateFlag == "delete")
@@ -164,7 +170,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
 //        print("longitudeon map",newPin.coordinate.longitude)
 //        print("Delete the location",newPin.coordinate)
 //
-//        delete()
+//       // delete()
 //        locationToUpdate = nil
 //        annotaionToUpdate = nil
 //
@@ -173,7 +179,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
 //             print("Back to normal",newPin.coordinate.longitude)
 //       }
 //  
-//    }
+    }
     
     func delete() {
         var error:NSError? = nil
@@ -231,7 +237,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         var newAnnotation:MKPointAnnotation?
         newAnnotation = MKPointAnnotation()
-        newAnnotation!.coordinate = locationPoint
+        newAnnotation!.coordinate = newLocation.coordinate
         newAnnotation!.title = Keys.pinTitle
         newAnnotation!.subtitle = Keys.pinSubtitle
         
@@ -384,8 +390,8 @@ extension PhotoAlbumViewController {
             pinView!.pinColor = MKPinAnnotationColor.red
            
             //Right call out button to display Flickr images
-//            pinView!.rightCalloutAccessoryView =  UIButton(type: UIButtonType.detailDisclosure)
-//
+            pinView!.rightCalloutAccessoryView =  UIButton(type: UIButtonType.detailDisclosure)
+
             //  Left call out button as delete pin button
             let deleteLocationButton = UIButton(type: UIButtonType.system)
             deleteLocationButton.frame = CGRect(x:0, y:0, width:200, height:300)
@@ -404,7 +410,7 @@ extension PhotoAlbumViewController {
     }
     
     // Update location when pin is dragged
-    func mapView(_ mapView: MKMapView, annotationView view: MKPinAnnotationView, didChange newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
    
         switch newState {
         case .starting:
@@ -438,17 +444,19 @@ extension PhotoAlbumViewController {
     func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!)
     {
         
-        print("disclosure pressed on: \(String(describing: view.annotation?.title))")
+        print("1 disclosure pressed on: \(String(describing: view.annotation?.title))")
         
     }
    
+    
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
-         print("disclosure pressed on: \(String(describing: view.annotation?.title))")
-        // first ensure that it really is an EventAnnotation:
-//        if let eventAnnotation = view.annotation as? EventAnnotation {
-//            let theEvent = eventAnnotation.myEvent
-//            // now do somthing with your event
-//        }
+        print("Swift 3 disclosure pressed on: \(String(describing: view.annotation?.title))")
+        locationToUpdate = getMapLocationFromAnnotation(annotation: view.annotation!)
+        annotaionToUpdate = view.annotation
+        removeMapLocation()
+       
+        
+      
     }
 }

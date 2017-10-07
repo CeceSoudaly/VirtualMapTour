@@ -37,12 +37,34 @@ public class Location: NSManagedObject {
             self.init(entity: ent, insertInto: context)
             
             print("Keys.Latitude === >",dictionary[Keys.Latitude])
+            if let longitude = dictionary[Keys.Latitude]  as? Double
+            {
+                self.longitude = longitude
+            }
+           
+            if let Latitude = dictionary[Keys.Latitude]  as? Double
+            {
+                self.longitude = Latitude
+            }
+            
+            if let Latitude = dictionary[Keys.Latitude]  as? Double
+            {
+                self.longitude = Latitude
+            }
+            
+            if let Title = dictionary[Keys.Title]  as? String
+            {
+                self.title =  Title
+            }
+            
+            if let Subtitle = dictionary[Keys.Subtitle]  as? String
+            {
+                self.subtitle =  Subtitle
+            }
             
             
-            self.longitude = dictionary[Keys.Latitude] as! Double
-            self.title = dictionary[Keys.Title] as! String
-            self.subtitle = dictionary[Keys.Subtitle] as! String
-            self.latitude = dictionary[Keys.Latitude] as! Double
+            
+            
             
         } else {
             fatalError("Unable to find Entity name!")
