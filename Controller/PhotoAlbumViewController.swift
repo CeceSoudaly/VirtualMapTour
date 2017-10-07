@@ -155,7 +155,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     @IBAction func userTapAction(_ recognizer: UIGestureRecognizer) {
 
        print("current state of the program ", PhotoAlbumViewController.stateFlag)
-
+       
 //
 //       //when tap make use its on a pin
 //       if(PhotoAlbumViewController.stateFlag == "delete")
@@ -170,7 +170,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
 //        print("longitudeon map",newPin.coordinate.longitude)
 //        print("Delete the location",newPin.coordinate)
 //
-//       // delete()
+//     delete()
 //        locationToUpdate = nil
 //        annotaionToUpdate = nil
 //
@@ -321,26 +321,27 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     func removeMapLocation() -> Void {
         
         // Remove annotation
-        print("self.annotaionToUpdate",self.annotaionToUpdate)
-        print("locationToDelete",locationToUpdate)
-
         self.mapView.removeAnnotation(self.annotaionToUpdate!)
         self.locations = fetchAllLocations()
-
+        
+        print("self.locations" ,self.locations.count)
+        
         if let locationToDelete = locationToUpdate {
 
             //Remove location from array
-            let index = (self.locations as NSArray).index(of: locationToUpdate)
-
+            let index: Int = (self.locations as NSArray).index(of: locationToUpdate)
+            print(" b4 self.locations" ,self.locations.count  , index)
             self.locations.remove(at: index)
-
+         
             //Remove location from context
-            sharedContext.delete(locationToUpdate!)
+            let deleteLocation: Location = self.locations[index]
+            sharedContext.delete(deleteLocation)
             self.application.saveContext()
-
+ 
         }
         locationToUpdate = nil
         annotaionToUpdate = nil
+       
     }
     
     func addMapLocation(annotation:MKAnnotation) {
@@ -424,37 +425,28 @@ extension PhotoAlbumViewController {
         }
     }
     
-
-//  func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!)
-//  {
-//
-//        if control == view.rightCalloutAccessoryView {
-//            // Show flickr images on right call out
-//            performSegue(withIdentifier: "showAlbum", sender: view)
-//
-//        } else if control == view.leftCalloutAccessoryView {
-//
-//            // Delete annotation and location on left call out
-//            locationToUpdate = getMapLocationFromAnnotation(annotation: view.annotation!)
-//            annotaionToUpdate = view.annotation
-//            removeMapLocation()
-//        }
-//    }
-    
     func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!)
     {
         
         print("1 disclosure pressed on: \(String(describing: view.annotation?.title))")
         
     }
-   
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
         print("Swift 3 disclosure pressed on: \(String(describing: view.annotation?.title))")
-        locationToUpdate = getMapLocationFromAnnotation(annotation: view.annotation!)
-        annotaionToUpdate = view.annotation
-        removeMapLocation()
+        
+        if(PhotoAlbumViewController.stateFlag == "done") {
+            // Show flickr images on right call out
+            //performSegueWithIdentifier("showAlbum", sender: view)
+            
+        } else if(PhotoAlbumViewController.stateFlag == "delete"){
+            
+            // Delete annotation and location on left call out
+            locationToUpdate = getMapLocationFromAnnotation(annotation: view.annotation!)
+            annotaionToUpdate = view.annotation
+            removeMapLocation()
+        }
        
         
       
