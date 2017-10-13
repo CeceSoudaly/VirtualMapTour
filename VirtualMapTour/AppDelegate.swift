@@ -90,6 +90,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("no change is present")
         }
     }
+    
+    //MARK:- Core Data Error
+    
+    // Core data error is displayed here in Alert - This error is posted from CoreDataStackManager.swift
+    
+    // Notification to post and listen from AppDelegate
+    
+    let coreDataOperationDidFailNotification = "coreDataOperationDidFailNotification"
+    
+    //Call this function from CoreDataStackManager when error is there
+    func fatalCoreDataError(error: NSError?) {
+        
+        if let fatalError = error {
+            print("Fatal Core Data error: \(fatalError), \(fatalError.userInfo)")
+        }
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: coreDataOperationDidFailNotification), object: error)
+    }
+    
+    // Show alert by listening to Notification
+    func showFatalCoreDataNotifications() {
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: coreDataOperationDidFailNotification), object: nil, queue: OperationQueue.main, using: {
+            notification in
+            
+            let alert = UIAlertController(title: "Application Error",
+                                          message: "There was a fatal error in the app. \n\n"
+                                            + "Press OK to terminate the app. App cannot continue. We are sorry for this inconvenience.",
+                                          preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "OK", style: .default) { _ in
+                
+                // Terminate the app after message is displayed.
+                abort()
+            }
+            
+            alert.addAction(action)
+            
+            self.viewControllerForShowingAlert().present(alert, animated: true, completion: nil)
+        })
+    }
+    
+    // Show Alert view controller on any of the view controller which is currently displayed to the user.
+    func viewControllerForShowingAlert() -> UIViewController {
+        
+        let rootViewController = self.window!.rootViewController!
+        
+        if let displayedViewController = rootViewController.presentedViewController {
+            return displayedViewController
+        } else {
+            return rootViewController
+        }
+    }
 
 }
 

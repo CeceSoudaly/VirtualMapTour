@@ -16,8 +16,8 @@ import CoreData
 class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate{
     
     @IBOutlet weak var mapView: MKMapView!
-   
-//    var pinchGesture  = UIPinchGestureRecognizer()
+    
+    //    var pinchGesture  = UIPinchGestureRecognizer()
     let locationManager =  CLLocationManager()
     
     // Geocoder to get the address of the pin
@@ -32,14 +32,14 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     var annotationView: MKAnnotationView?
     
     var locations = [Location]()
-  
+    
     let newPin = MKPointAnnotation()
     
-    var fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
-
+    //    var fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
+    
     var application = (UIApplication.shared.delegate as! AppDelegate)
     
-     static var stateFlag = "none"
+    static var stateFlag = "none"
     
     // All static varibales used to save data
     struct Keys {
@@ -54,13 +54,13 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     }
     
     override func viewDidLoad() {
-       
-         super.viewDidLoad()
-
+        
+        super.viewDidLoad()
+        
         mapView.delegate = self
         
         // User's location
-        locationManager.delegate = self as! CLLocationManagerDelegate
+        locationManager.delegate = self as CLLocationManagerDelegate
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         if #available(iOS 8.0, *) {
             locationManager.requestAlwaysAuthorization()
@@ -73,51 +73,47 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Edit",style: .plain, target: self, action: #selector(deleteLocation))
         
-        // add gesture recognizer
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(PhotoAlbumViewController.longPressAction(_:))) // colon needs to pass through info
-        longPress.minimumPressDuration = 1.5 // in seconds
-        //add gesture recognition
-        mapView.addGestureRecognizer(longPress)
         
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleTap))
-        mapView.addGestureRecognizer(panGestureRecognizer)
-       
-    
+        addTapGesturesToMapView()
+        addLongTapGesturesToMapView()
+        
+        // Fetch all pins from core data and show in the mapview
+        print("Onload ... how many?", self.locations.count )
+        self.locations = fetchAllLocations()
+        
+        print("AFTER fetchAllLocations ... how many?", self.locations.count )
+        updateMapViewWithAnnotations()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        let data:[Location]!
-        do{
-            data = try self.sharedContext.fetch(self.fetchRequest)
-        }
-        catch{
-            
-            print("unable to retrieve data")
-            return
-        }
-        
-        if data.count > 0
-        {
-            for items in data
-            {
-                let lat = items.latitude
-                let long = items.longitude
-                let coordinates = CLLocationCoordinate2D(latitude: lat, longitude: long)
+    func addLongTapGesturesToMapView() {
+        let longPressGesture: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("longPressAction:"))
+        longPressGesture.minimumPressDuration = 1
+        mapView.addGestureRecognizer(longPressGesture)
+    }
+    
+    func addTapGesturesToMapView() {
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleTap))
+        mapView.addGestureRecognizer(panGestureRecognizer)
+    }
+    
+    func updateMapViewWithAnnotations() {
+        var annotations = [MKPointAnnotation]()
+        if locations.count > 0 {
+            for location in locations {
                 let annotation = MKPointAnnotation()
-                annotation.coordinate = coordinates
-                mapView.removeAnnotation(annotation)
-                mapView.addAnnotation(annotation)
+                annotation.coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+                annotation.title = location.title
+                annotation.subtitle = location.subtitle
+                annotations.append(annotation)
             }
         }
-        
-        mapView.reloadInputViews()
+        mapView.addAnnotations(annotations)
     }
     
     func handleTap(panGesture: UIPanGestureRecognizer) {
-         print("user had tap  !!! ",panGesture)
+        print("user had tap  !!! ",panGesture)
     }
-
+    
     func deleteLocation() -> Void {
         PhotoAlbumViewController.stateFlag = "delete";
     }
@@ -129,92 +125,45 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     @IBAction func longPressAction(_ recognizer: UIGestureRecognizer) {
         
-        print("user had longPressAction on map",recognizer)
-        
-        let touchedAt = recognizer.location(in: self.mapView) // adds the location on the view it was pressed
-        let touchedAtCoordinate : CLLocationCoordinate2D = mapView.convert(touchedAt, toCoordinateFrom: self.mapView) // will get coordinates
-       
-        newPin.coordinate = touchedAtCoordinate
-       
-        //  mapView.addAnnotation(newPin)
-        //update Core Data
-        self.addAnnotation(locationPoint: touchedAtCoordinate)
+        if (recognizer.state == UIGestureRecognizerState.ended)
+        {
+            let touchedAt = recognizer.location(in: self.mapView) // adds the location on the view it was pressed
+            let touchedAtCoordinate : CLLocationCoordinate2D = mapView.convert(touchedAt, toCoordinateFrom: self.mapView) // will
+            newPin.coordinate = touchedAtCoordinate
+            //update Core Data
+            self.addPinToMapAndCoreData(locationPoint: touchedAtCoordinate)
+        }
         
     }
-
+    
     
     @IBAction func userRotateAction(_ sender: Any) {
         
-         print("user userTapAction !!!",sender)
+        print("user userTapAction !!!",sender)
     }
     
     /**
      tap delete
-    **/
+     **/
     
     @IBAction func userTapAction(_ recognizer: UIGestureRecognizer) {
-
-       print("current state of the program ", PhotoAlbumViewController.stateFlag)
-       
-//
-//       //when tap make use its on a pin
-//       if(PhotoAlbumViewController.stateFlag == "delete")
-//       {
-//
-//        let touchedAt = recognizer.location(in: self.mapView) // adds the location on the view it was pressed
-//        let touchedAtCoordinate : CLLocationCoordinate2D = mapView.convert(touchedAt, toCoordinateFrom: self.mapView) // will get coordinates
-//
-//        newPin.coordinate = touchedAtCoordinate
-//
-//        print("latituden on map",newPin.coordinate.latitude)
-//        print("longitudeon map",newPin.coordinate.longitude)
-//        print("Delete the location",newPin.coordinate)
-//
-//     delete()
-//        locationToUpdate = nil
-//        annotaionToUpdate = nil
-//
-//       } else if(PhotoAlbumViewController.stateFlag == "done")
-//       {
-//             print("Back to normal",newPin.coordinate.longitude)
-//       }
-//  
-    }
-    
-    func delete() {
-        var error:NSError? = nil
         
-        var results:[Location]!
+        print("current state of the program ", PhotoAlbumViewController.stateFlag)
         
-        do{
-            results = fetchAllLocations()
-            
-            print("size of the results...",results.count)
-            
-            for objectDelete in results {
-               sharedContext.delete(objectDelete)
-            }
-        }
-        catch{
-            
-            print("Error in fetchAllLocations")
-            
-        }
-        self.application.saveContext()
     }
     
     func fetchAllLocations() -> [Location] {
         var error:NSError? = nil
         var results:[Location]!
         do{
-                //Create the fetch request
-                results = try self.sharedContext.fetch(self.fetchRequest)
-         }
-            catch{
-                print("Error in fetchAllLocations")
-            }
-            self.application.saveContext()
-            return results
+            //Create the fetch request
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Location")
+            results = try self.sharedContext.fetch(fetchRequest) as! [Location]
+        }
+        catch{
+            print("Error in fetchAllLocations")
+        }
+        return results
     }
     
     func getMapLocationFromAnnotation(annotation:MKAnnotation) -> Location? {
@@ -226,12 +175,12 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             Location.Keys.Title: annotation.title! as AnyObject,
             Location.Keys.Subtitle: annotation.subtitle! as AnyObject
         ]
-       
+        
         return Location(dictionary: locationDictionary, context: self.sharedContext)
     }
     
     // Add pin annotation after long press gesture
-    func addAnnotation(locationPoint:CLLocationCoordinate2D) {
+    func addPinToMapAndCoreData(locationPoint:CLLocationCoordinate2D) {
         
         let newLocation: CLLocation = CLLocation(latitude: locationPoint.latitude, longitude:locationPoint.longitude)
         
@@ -327,51 +276,99 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         print("self.locations" ,self.locations.count)
         
         if let locationToDelete = locationToUpdate {
-
             //Remove location from array
             let index: Int = (self.locations as NSArray).index(of: locationToUpdate)
-            print(" b4 self.locations" ,self.locations.count  , index)
+            print(" b4 DELETE self.locations" ,self.locations.count  , index)
             self.locations.remove(at: index)
-         
+            
             //Remove location from context
-            let deleteLocation: Location = self.locations[index]
-            sharedContext.delete(deleteLocation)
-            self.application.saveContext()
- 
+            deletePin(locationToDelete: locationToDelete)
+            
+            print(" after DELETE self.locations" ,self.locations.count)
+            
+        }
+        
+        do {
+            try self.sharedContext.save()
+            
+            print("Share context save what do you have???",self.fetchAllLocations().count)
+        } catch let error as NSError  {
+            print("Could not save \(error), \(error.userInfo)")
+        } catch {
+            
         }
         locationToUpdate = nil
         annotaionToUpdate = nil
-       
+        
+    }
+    
+    func deletePin(locationToDelete :Location) {
+        var _:NSError? = nil
+        
+        var results:[Location]!
+        results = self.fetchAllLocations();
+        
+        print("How many do you have?..",results.count)
+        
+        for objectDelete in results {
+            
+            print("objectDelete.longitude .",objectDelete.longitude)
+            print("locationToDelete.longitude.",locationToDelete.longitude)
+            
+            if(objectDelete.longitude == locationToDelete.longitude)
+            {
+                print("b4 delete...",self.fetchAllLocations().count)
+                self.sharedContext.delete(objectDelete)
+                print("b4 save...",self.fetchAllLocations().count)
+                //Try to save it to coredata
+                
+                break
+            }
+        }
+        
     }
     
     func addMapLocation(annotation:MKAnnotation) {
         
-        Location.Keys.Latitude
+        do{
+            
+            //        let locationDictionary: [String : AnyObject] = [
+            //            Location.Keys.Latitude : annotation.coordinate.latitude as AnyObject,
+            //            Location.Keys.Longitude : annotation.coordinate.longitude as AnyObject,
+            //            Location.Keys.Title: annotation.title! as AnyObject,
+            //            Location.Keys.Subtitle: annotation.subtitle! as AnyObject
+            //        ]
+            //
+            //        let locationToBeAdded = Location(dictionary: locationDictionary, context: sharedContext)
+            //
+            //        self.locations.append(locationToBeAdded)
+            print(" Appending self.locations >>> ", self.locations.count)
+            
+            
+            //        print("Save location to core data >")
+            
+            
+            //save
+            print(" b4 safe ",self.fetchAllLocations().count)
+            let entityDescription = NSEntityDescription.entity(forEntityName: "Location", in: self.sharedContext)
+            let location = Location(entity: entityDescription!, insertInto: self.sharedContext)
+            //            print("Just created a notebook: \(nb)")
+            try self.sharedContext.save()
+            
+            
+            print("after save addMapLocation ",self.fetchAllLocations().count)
+            
+        }
+        catch{
+            print("Error while trying save pin Annotation.")
+        }
         
-        let locationDictionary: [String : AnyObject] = [
-            Location.Keys.Latitude : annotation.coordinate.latitude as AnyObject,
-            Location.Keys.Longitude : annotation.coordinate.longitude as AnyObject,
-            Location.Keys.Title: annotation.title! as AnyObject,
-            Location.Keys.Subtitle: annotation.subtitle! as AnyObject
-        ]
-        
-        let locationToBeAdded = Location(dictionary: locationDictionary, context: sharedContext)
-        self.locations.append(locationToBeAdded)
-        
-        let entityDescription = NSEntityDescription.entity(forEntityName: "Location", in: self.sharedContext)
-        let location = Location(entity: entityDescription!, insertInto: self.sharedContext)
-        location.latitude = annotation.coordinate.latitude
-        location.longitude = annotation.coordinate.longitude
-        
-        print("Save location to core data >")
-        self.application.saveContext()
-      
     }
-   
+    
     //MARK:- Core Data Operations
     var sharedContext: NSManagedObjectContext {
         return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-   }
+    }
 }
 
 extension PhotoAlbumViewController {
@@ -380,7 +377,7 @@ extension PhotoAlbumViewController {
         saveMapRegion()
     }
     
-   func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) ->  MKAnnotationView?{
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) ->  MKAnnotationView?{
         let reusableMapId = Keys.pinCellId
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reusableMapId) as? MKPinAnnotationView
         if pinView == nil {
@@ -389,16 +386,16 @@ extension PhotoAlbumViewController {
             pinView!.animatesDrop = true
             //pinView!.canShowCallout = true
             pinView!.pinColor = MKPinAnnotationColor.red
-           
+            
             //Right call out button to display Flickr images
             pinView!.rightCalloutAccessoryView =  UIButton(type: UIButtonType.detailDisclosure)
-
+            
             //  Left call out button as delete pin button
             let deleteLocationButton = UIButton(type: UIButtonType.system)
             deleteLocationButton.frame = CGRect(x:0, y:0, width:200, height:300)
-//            deleteLocationButton.setImage(UIImage(named: "deleteLocation"), for: UIControlState.normal)
-//            deleteLocationButton.backgroundColor = UIColor.cyan
-//            pinView?.leftCalloutAccessoryView = deleteLocationButton
+            //            deleteLocationButton.setImage(UIImage(named: "deleteLocation"), for: UIControlState.normal)
+            //            deleteLocationButton.backgroundColor = UIColor.cyan
+            //            pinView?.leftCalloutAccessoryView = deleteLocationButton
             pinView!.rightCalloutAccessoryView =  deleteLocationButton
             pinView?.isEnabled = true
             annotaionToUpdate = pinView?.annotation
@@ -412,7 +409,7 @@ extension PhotoAlbumViewController {
     
     // Update location when pin is dragged
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
-   
+        
         switch newState {
         case .starting:
             view.dragState = .dragging
@@ -420,7 +417,7 @@ extension PhotoAlbumViewController {
             annotaionToUpdate = view.annotation
         case .ending, .canceling:
             view.dragState = .none
-            addAnnotation(locationPoint: (view.annotation?.coordinate)!)
+            addPinToMapAndCoreData(locationPoint: (view.annotation?.coordinate)!)
         default: break
         }
     }
@@ -447,8 +444,9 @@ extension PhotoAlbumViewController {
             annotaionToUpdate = view.annotation
             removeMapLocation()
         }
-       
         
-      
+        
+        
     }
 }
+

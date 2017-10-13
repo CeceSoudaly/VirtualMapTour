@@ -14,6 +14,16 @@ private let SQLITE_FILE_NAME = "VirtualTourist.sqlite"
 
 class CoreDataStackManager {
     
+    /// NSPersistentStoreCoordinator error types
+    public enum CoordinatorError: Error {
+        /// .momd file not found
+        case modelFileNotFound
+        /// NSManagedObjectModel creation fail
+        case modelCreationError
+        /// Gettings document directory fail
+        case storePathNotFound
+    }
+    
     
     // MARK: Properties
     
@@ -31,6 +41,59 @@ class CoreDataStackManager {
         }
         return Static.instance!
     }
+
+   
+    //MARK:- The Core Data Stack
+    
+    // Documents Directory URL - the path the sqlite file
+    lazy var applicationDocumentsDirectory:NSURL? = {
+        let urls = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask)
+        
+        if urls.count > 0 {
+            if let url = urls[urls.count-1] as? NSURL {
+                return url
+            }
+        }
+        return nil
+        
+        //return urls[urls.count-1] as! NSURL
+    }()
+    
+    // The managed object property for the application
+    lazy var managedObjectModel: NSManagedObjectModel? = {
+        
+        if  let modelURL = Bundle.main.url(forResource: "Model", withExtension: "momd") {
+            if let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL) {
+                return managedObjectModel
+            }
+        }
+        return nil
+    }()
+    
+    lazy var pesistentStoreCoordinator: NSPersistentStoreCoordinator? = {
+        
+        var coordinator: NSPersistentStoreCoordinator? = nil
+        
+        if let objectModel = self.managedObjectModel {
+            coordinator = NSPersistentStoreCoordinator(managedObjectModel: objectModel )
+            
+            if let appURL = self.applicationDocumentsDirectory {
+                
+                let url = appURL.appendingPathComponent(SQLITE_FILE_NAME)
+                
+                var error:NSError? = nil
+                
+//                if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) != nil  {
+//                    return coordinator
+//                }
+            }
+        }
+//        self.raiseFatalCoreDataError(nil)
+        return coordinator
+    }()
+    
+   
+   
     
     // MARK: Initializers
     

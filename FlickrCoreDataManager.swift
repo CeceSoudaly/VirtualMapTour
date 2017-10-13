@@ -16,6 +16,7 @@ extension FlickrClient {
     var sharedContext: NSManagedObjectContext {
         return CoreDataStackManager.sharedInstance().context
     }
+ 
     
     //Wrapper method to download new Flickr photo collection based on next Page number
     
