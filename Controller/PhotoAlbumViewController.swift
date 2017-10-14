@@ -167,16 +167,34 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     }
     
     func getMapLocationFromAnnotation(annotation:MKAnnotation) -> Location? {
-        
         // Fetch exact map location from annotation view
-        let locationDictionary: [String : AnyObject] = [
-            Location.Keys.Latitude : annotation.coordinate.latitude as AnyObject,
-            Location.Keys.Longitude : annotation.coordinate.longitude as AnyObject,
-            Location.Keys.Title: annotation.title! as AnyObject,
-            Location.Keys.Subtitle: annotation.subtitle! as AnyObject
-        ]
+//        let locationDictionary: [String : AnyObject] = [
+//            Location.Keys.Latitude : annotation.coordinate.latitude as AnyObject,
+//            Location.Keys.Longitude : annotation.coordinate.longitude as AnyObject,
+//            Location.Keys.Title: annotation.title! as AnyObject,
+//            Location.Keys.Subtitle: annotation.subtitle! as AnyObject
+//        ]
+//
+//        return Location(dictionary: locationDictionary, context: self.sharedContext)
         
-        return Location(dictionary: locationDictionary, context: self.sharedContext)
+        for location in self.locations {
+            
+            print("location.longitude .",location.longitude)
+            print("annotation.longitude.",annotation.coordinate.longitude)
+            print("annotation title.",annotation.title)
+            print("location title.",location.title)
+            
+            for var i in 0..<self.locations.count {
+                if((self.locations[i].title).contains(annotation.title as! String))
+                {
+                    return location
+                    i -= 1
+                }
+              
+            }
+        }
+        
+        return self.locations.last
     }
     
     // Add pin annotation after long press gesture
@@ -280,12 +298,12 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             let index: Int = (self.locations as NSArray).index(of: locationToUpdate)
             print(" b4 DELETE self.locations" ,self.locations.count  , index)
             self.locations.remove(at: index)
-            
+        
             //Remove location from context
-            deletePin(locationToDelete: locationToDelete)
+           deletePin(locationToDelete: locationToUpdate!)
             
             print(" after DELETE self.locations" ,self.locations.count)
-            
+
         }
         
         do {
@@ -314,15 +332,11 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             
             print("objectDelete.longitude .",objectDelete.longitude)
             print("locationToDelete.longitude.",locationToDelete.longitude)
-            
-            if(objectDelete.longitude == locationToDelete.longitude)
+           if(objectDelete.longitude == locationToDelete.longitude)
             {
-                print("b4 delete...",self.fetchAllLocations().count)
                 self.sharedContext.delete(objectDelete)
-                print("b4 save...",self.fetchAllLocations().count)
                 //Try to save it to coredata
-                
-                break
+                 break
             }
         }
         
@@ -332,26 +346,22 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         do{
             
-            //        let locationDictionary: [String : AnyObject] = [
-            //            Location.Keys.Latitude : annotation.coordinate.latitude as AnyObject,
-            //            Location.Keys.Longitude : annotation.coordinate.longitude as AnyObject,
-            //            Location.Keys.Title: annotation.title! as AnyObject,
-            //            Location.Keys.Subtitle: annotation.subtitle! as AnyObject
-            //        ]
-            //
-            //        let locationToBeAdded = Location(dictionary: locationDictionary, context: sharedContext)
-            //
-            //        self.locations.append(locationToBeAdded)
+            let locationDictionary: [String : AnyObject] = [
+                Location.Keys.Latitude : annotation.coordinate.latitude as AnyObject,
+                Location.Keys.Longitude : annotation.coordinate.longitude as AnyObject,
+                Location.Keys.Title: annotation.title! as AnyObject,
+                Location.Keys.Subtitle: annotation.subtitle! as AnyObject
+            ]
+    
+            let locationToBeAdded = Location(dictionary: locationDictionary, context: sharedContext)
+    
+            self.locations.append(locationToBeAdded)
             print(" Appending self.locations >>> ", self.locations.count)
-            
-            
-            //        print("Save location to core data >")
-            
             
             //save
             print(" b4 safe ",self.fetchAllLocations().count)
-            let entityDescription = NSEntityDescription.entity(forEntityName: "Location", in: self.sharedContext)
-            let location = Location(entity: entityDescription!, insertInto: self.sharedContext)
+//            let entityDescription = NSEntityDescription.entity(forEntityName: "Location", in: self.sharedContext)
+//            let location = Location(entity: entityDescription!, insertInto: self.sharedContext)
             //            print("Just created a notebook: \(nb)")
             try self.sharedContext.save()
             
