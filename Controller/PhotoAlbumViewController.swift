@@ -73,7 +73,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Edit",style: .plain, target: self, action: #selector(deleteLocation))
         
-        
+        restoreMapRegion(animated: false)
         addTapGesturesToMapView()
         addLongTapGesturesToMapView()
         
@@ -98,12 +98,17 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     func updateMapViewWithAnnotations() {
         var annotations = [MKPointAnnotation]()
+        print("locations.count ....",locations.count)
         if locations.count > 0 {
             for location in locations {
                 let annotation = MKPointAnnotation()
+                print("latitude ....",location.latitude)
+                print("longtitue",location.longitude)
                 annotation.coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
                 annotation.title = location.title
+                print("title ",location.title)
                 annotation.subtitle = location.subtitle
+                print("subtitle ",location.subtitle)
                 annotations.append(annotation)
             }
         }
@@ -133,7 +138,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             //update Core Data
             self.addPinToMapAndCoreData(locationPoint: touchedAtCoordinate)
         }
-        
+    
     }
     
     
@@ -168,16 +173,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     func getMapLocationFromAnnotation(annotation:MKAnnotation) -> Location? {
         // Fetch exact map location from annotation view
-//        let locationDictionary: [String : AnyObject] = [
-//            Location.Keys.Latitude : annotation.coordinate.latitude as AnyObject,
-//            Location.Keys.Longitude : annotation.coordinate.longitude as AnyObject,
-//            Location.Keys.Title: annotation.title! as AnyObject,
-//            Location.Keys.Subtitle: annotation.subtitle! as AnyObject
-//        ]
-//
-//        return Location(dictionary: locationDictionary, context: self.sharedContext)
-        
-        for location in self.locations {
+       for location in self.locations {
             
             print("location.longitude .",location.longitude)
             print("annotation.longitude.",annotation.coordinate.longitude)
@@ -285,6 +281,22 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         NSKeyedArchiver.archiveRootObject(mapRegionDictionary, toFile: mapRegionFilePath)
     }
     
+    func restoreMapRegion(animated: Bool) {
+        if let mapRegionDictionary = NSKeyedUnarchiver.unarchiveObject(withFile: mapRegionFilePath) as? [String:AnyObject] {
+            
+            let longitude = mapRegionDictionary[Keys.Longitude] as! CLLocationDegrees
+            let latitude = mapRegionDictionary[Keys.Latitude] as! CLLocationDegrees
+            let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            
+            let longitudeDelta = mapRegionDictionary[Keys.LongitudeDelta] as! CLLocationDegrees
+            let latitudeDelta = mapRegionDictionary[Keys.LatitudeDelta] as! CLLocationDegrees
+            let span = MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
+            
+            let savedRegion = MKCoordinateRegion(center: center, span: span)
+            mapView.setRegion(savedRegion, animated: animated)
+        }
+    }
+    
     func removeMapLocation() -> Void {
         
         // Remove annotation
@@ -358,11 +370,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             self.locations.append(locationToBeAdded)
             print(" Appending self.locations >>> ", self.locations.count)
             
-            //save
-            print(" b4 safe ",self.fetchAllLocations().count)
-//            let entityDescription = NSEntityDescription.entity(forEntityName: "Location", in: self.sharedContext)
-//            let location = Location(entity: entityDescription!, insertInto: self.sharedContext)
-            //            print("Just created a notebook: \(nb)")
             try self.sharedContext.save()
             
             
@@ -454,8 +461,6 @@ extension PhotoAlbumViewController {
             annotaionToUpdate = view.annotation
             removeMapLocation()
         }
-        
-        
         
     }
 }

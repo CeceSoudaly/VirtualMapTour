@@ -36,20 +36,14 @@ public class Location: NSManagedObject {
         if let ent = NSEntityDescription.entity(forEntityName: "Location", in: context) {
             self.init(entity: ent, insertInto: context)
             
-            print("Keys.Latitude === >",dictionary[Keys.Latitude])
-            if let longitude = dictionary[Keys.Latitude]  as? Double
+            if let longitude = dictionary[Keys.Longitude]  as? Double
             {
                 self.longitude = longitude
-            }
-           
-            if let Latitude = dictionary[Keys.Latitude]  as? Double
-            {
-                self.longitude = Latitude
             }
             
             if let Latitude = dictionary[Keys.Latitude]  as? Double
             {
-                self.longitude = Latitude
+                self.latitude = Latitude
             }
             
             if let Title = dictionary[Keys.Title]  as? String

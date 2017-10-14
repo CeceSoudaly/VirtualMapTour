@@ -42,7 +42,7 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/FlickrClient.swift"
-                  timestampString = "529637644.224299"
+                  timestampString = "529646454.728838"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "36"
@@ -57,7 +57,7 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/FlickrClient.swift"
-                  timestampString = "529637644.225674"
+                  timestampString = "529646454.73029"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "38"
@@ -160,6 +160,22 @@
             startingLineNumber = "67"
             endingLineNumber = "67"
             landmarkName = "getFlickrImagesByLatLon(latitude:longitude:nextPageNumber:completionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Controller/PhotoAlbumViewController.swift"
+            timestampString = "529646454.648502"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
+            landmarkName = "updateMapViewWithAnnotations()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
