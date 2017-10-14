@@ -78,10 +78,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         addLongTapGesturesToMapView()
         
         // Fetch all pins from core data and show in the mapview
-        print("Onload ... how many?", self.locations.count )
         self.locations = fetchAllLocations()
-        
-        print("AFTER fetchAllLocations ... how many?", self.locations.count )
         updateMapViewWithAnnotations()
     }
     
@@ -98,17 +95,13 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     func updateMapViewWithAnnotations() {
         var annotations = [MKPointAnnotation]()
-        print("locations.count ....",locations.count)
+      
         if locations.count > 0 {
             for location in locations {
                 let annotation = MKPointAnnotation()
-                print("latitude ....",location.latitude)
-                print("longtitue",location.longitude)
                 annotation.coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
                 annotation.title = location.title
-                print("title ",location.title)
                 annotation.subtitle = location.subtitle
-                print("subtitle ",location.subtitle)
                 annotations.append(annotation)
             }
         }
@@ -138,9 +131,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             //update Core Data
             self.addPinToMapAndCoreData(locationPoint: touchedAtCoordinate)
         }
-    
     }
-    
     
     @IBAction func userRotateAction(_ sender: Any) {
         
@@ -174,19 +165,12 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     func getMapLocationFromAnnotation(annotation:MKAnnotation) -> Location? {
         // Fetch exact map location from annotation view
        for location in self.locations {
-            
-            print("location.longitude .",location.longitude)
-            print("annotation.longitude.",annotation.coordinate.longitude)
-            print("annotation title.",annotation.title)
-            print("location title.",location.title)
-            
             for var i in 0..<self.locations.count {
                 if((self.locations[i].title).contains(annotation.title as! String))
                 {
                     return location
                     i -= 1
                 }
-              
             }
         }
         
@@ -308,14 +292,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         if let locationToDelete = locationToUpdate {
             //Remove location from array
             let index: Int = (self.locations as NSArray).index(of: locationToUpdate)
-            print(" b4 DELETE self.locations" ,self.locations.count  , index)
             self.locations.remove(at: index)
-        
             //Remove location from context
-           deletePin(locationToDelete: locationToUpdate!)
-            
-            print(" after DELETE self.locations" ,self.locations.count)
-
+            deletePin(locationToDelete: locationToUpdate!)
         }
         
         do {
@@ -337,18 +316,12 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
         var results:[Location]!
         results = self.fetchAllLocations();
-        
-        print("How many do you have?..",results.count)
-        
+       
         for objectDelete in results {
-            
-            print("objectDelete.longitude .",objectDelete.longitude)
-            print("locationToDelete.longitude.",locationToDelete.longitude)
-           if(objectDelete.longitude == locationToDelete.longitude)
+        if(objectDelete.longitude == locationToDelete.longitude)
             {
                 self.sharedContext.delete(objectDelete)
-                //Try to save it to coredata
-                 break
+                break
             }
         }
         
@@ -366,15 +339,10 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             ]
     
             let locationToBeAdded = Location(dictionary: locationDictionary, context: sharedContext)
-    
             self.locations.append(locationToBeAdded)
-            print(" Appending self.locations >>> ", self.locations.count)
             
             try self.sharedContext.save()
-            
-            
-            print("after save addMapLocation ",self.fetchAllLocations().count)
-            
+           
         }
         catch{
             print("Error while trying save pin Annotation.")
@@ -391,6 +359,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
 extension PhotoAlbumViewController {
     
     func mapView(mapView: MKMapView!, regionDidChangeAnimated animated: Bool) {
+        print("regionDidChangeAnimated: \(String(describing: mapView.description))")
         saveMapRegion()
     }
     
@@ -437,13 +406,6 @@ extension PhotoAlbumViewController {
             addPinToMapAndCoreData(locationPoint: (view.annotation?.coordinate)!)
         default: break
         }
-    }
-    
-    func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!)
-    {
-        
-        print("1 disclosure pressed on: \(String(describing: view.annotation?.title))")
-        
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
