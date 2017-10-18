@@ -26,6 +26,7 @@
 		A9109A4A1F5CEA8800D668E4 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9109A491F5CEA8800D668E4 /* CoreDataStackManager.swift */; };
 		A911487C1F63797000712D86 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = A911487A1F63797000712D86 /* Location.swift */; };
 		A911487D1F63797000712D86 /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A911487B1F63797000712D86 /* Location+CoreDataProperties.swift */; };
+		A914350D1F945F2800C4E5BC /* PicGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A914350C1F945F2800C4E5BC /* PicGalleryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		A9109A491F5CEA8800D668E4 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
 		A911487A1F63797000712D86 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Location.swift; path = model/Location.swift; sourceTree = "<group>"; };
 		A911487B1F63797000712D86 /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Location+CoreDataProperties.swift"; path = "model/Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A914350C1F945F2800C4E5BC /* PicGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicGalleryViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +177,7 @@
 				A9109A411F5B7E6A00D668E4 /* FlickrConstants.swift */,
 				A9109A431F5B7EAE00D668E4 /* FlickrClient.swift */,
 				A9109A451F5CC41200D668E4 /* FlickrConvenience.swift */,
+				A914350C1F945F2800C4E5BC /* PicGalleryViewController.swift */,
 			);
 			name = Controller;
 			path = /Users/cecesoudaly/Desktop/VirtualMapTour;
@@ -336,6 +339,7 @@
 				A9109A481F5CEA1400D668E4 /* FlickrCoreDataManager.swift in Sources */,
 				A90F8A8A1F551E7C00CF2D48 /* Photo.swift in Sources */,
 				A90D2ACE1F53B14900297B90 /* ViewController.swift in Sources */,
+				A914350D1F945F2800C4E5BC /* PicGalleryViewController.swift in Sources */,
 				A90D2ACC1F53B14900297B90 /* AppDelegate.swift in Sources */,
 				A90F8A8F1F55272200CF2D48 /* PhotoAlbumViewController.swift in Sources */,
 				A9109A4A1F5CEA8800D668E4 /* CoreDataStackManager.swift in Sources */,

@@ -31,14 +31,22 @@
                                     <outletCollection property="gestureRecognizers" destination="t9S-iG-hLI" appends="YES" id="4GI-NU-e46"/>
                                 </connections>
                             </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Delete" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zw9-fR-zdr">
+                                <rect key="frame" x="31" y="607" width="311" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="E5J-1Z-F6v" secondAttribute="bottom" constant="8" id="DQ3-b5-KLQ"/>
-                            <constraint firstItem="E5J-1Z-F6v" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="13" id="KDP-mc-ojv"/>
-                            <constraint firstAttribute="trailing" secondItem="E5J-1Z-F6v" secondAttribute="trailing" id="eCS-BU-RFq"/>
-                            <constraint firstItem="E5J-1Z-F6v" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="t6a-Wz-19L"/>
+                            <constraint firstItem="E5J-1Z-F6v" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="13" id="ATh-53-j3j"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="E5J-1Z-F6v" secondAttribute="bottom" constant="8" id="T91-Lu-lG2"/>
+                            <constraint firstItem="E5J-1Z-F6v" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Yey-xX-Rjs"/>
+                            <constraint firstAttribute="trailing" secondItem="E5J-1Z-F6v" secondAttribute="trailing" id="kJK-uw-cgk"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="XKs-TF-Xgj"/>
@@ -73,7 +81,7 @@
         <!--View Controller-->
         <scene sceneID="6oI-Wc-N5b">
             <objects>
-                <viewController id="VHD-PH-PgU" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PicGalleryViewController" id="VHD-PH-PgU" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qad-C5-rmi"/>
                         <viewControllerLayoutGuide type="bottom" id="GlB-Gg-ZIm"/>
@@ -81,7 +89,7 @@
                     <view key="view" contentMode="scaleToFill" id="ouu-cj-BQ7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.1594577502" green="0.38120993590000002" blue="0.17405853369999999" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LPl-qY-ItO" userLabel="First Responder" sceneMemberID="firstResponder"/>
