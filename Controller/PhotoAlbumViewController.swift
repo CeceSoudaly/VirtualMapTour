@@ -352,6 +352,15 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             self.locations.append(locationToBeAdded)
             
             try self.sharedContext.save()
+            
+            //Pre-Fetch photos entites related to this location and save to core data
+            
+            FlickrClient.sharedInstance().prefetchPhotosForLocationAndSaveToDataContext(location: locationToBeAdded) {
+                error in
+                if let errorMessage = error {
+                    print(errorMessage.localizedDescription)
+                }
+            }
            
         }
         catch{

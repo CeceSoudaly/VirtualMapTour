@@ -20,9 +20,9 @@ class PhotoCollectionView: UICollectionViewCell {
 //    var taskToCancelifCellIsReused: URLSessionTask{
 //        
 //        didSet {
-////            if let taskToCancel = oldValue {
-////                taskToCancel.cancel()
-////            }
+//            if let taskToCancel = oldValue {
+//                taskToCancel.cancel()
+//            }
 //        }
 //    }
     

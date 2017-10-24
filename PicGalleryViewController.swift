@@ -35,45 +35,64 @@ class PicGalleryViewController: UIViewController, UICollectionViewDataSource,UIC
     //MARK:- Life cycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.hidden = false
-        self.navigationController?.navigationItem.hidesBackButton = false
-        self.navigationController?.toolbarHidden = false
-        
-        //Display the annotation for location
-        setMapRegionAndAddAnnotation(true)
-        
-        dataDownloadActivityIndicator.startAnimating()
-        
-        // Start the fetched results controller
-        var error: NSError?
-        fetchedResultsController.performFetch(&error)
-        if let error = error {
-            println("Error performing initial fetch: \(error)")
+//        self.navigationController?.navigationBar.hidden = false
+//        self.navigationController?.navigationItem.hidesBackButton = false
+//        self.navigationController?.toolbarHidden = false
+//
+//        //Display the annotation for location
+//        setMapRegionAndAddAnnotation(true)
+//
+//        dataDownloadActivityIndicator.startAnimating()
+//
+//        // Start the fetched results controller
+        do {
+                var error: NSError?
+                try fetchedResultsController.performFetch()
+                if let error = error {
+                    print("Error performing initial fetch: \(error)")
+                }
+                fetchedResultsController.delegate = self
+        } catch let error as NSError  {
+            print("Could not save \(error), \(error.userInfo)")
+        } catch {
+            
         }
-        fetchedResultsController.delegate = self
         
-        // Tool bar button to toggle New collection and Save collection button
-        updateToolbarButton()
+//
+//        // Tool bar button to toggle New collection and Save collection button
+//        updateToolbarButton()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // This is called rarely - as Flickr photos are already fetched when pin is dropped on the map in previous view controller
         if location.photos.isEmpty {
             var currentPageNumber = 0
-            loadNewCollection(currentPageNumber)
+            loadNewCollection(currentPageNumber: currentPageNumber)
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    func loadNewCollection(currentPageNumber _: Int)
+    {
+        //Pre-Fetch photos entites related to this location and save to core data
+        
+//        FlickrClient.sharedInstance().prefetchPhotosForLocationAndSaveToDataContext(locationToBeAdded) {
+//            error in
+//            if let errorMessage = error {
+//                println(errorMessage.localizedDescription)
+//            }
+//        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         // Remove the delegate reference
         fetchedResultsController.delegate = nil
         
         // Stop all the downloading tasks
-        if dataTask?.state == NSURLSessionTaskState.Running {
+        if dataTask?.state == URLSessionTask.State.running {
             dataTask?.cancel()
         }
     }
