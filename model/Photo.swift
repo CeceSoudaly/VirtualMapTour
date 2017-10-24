@@ -74,12 +74,13 @@ public class Photo: NSManagedObject {
 //    }
 //    
 //    // Download image to documents directory and retrieve it using image identifier
-//    var image: UIImage? {
-//        get {
-//            return FlickrClient.Caches.imageCache.imageWithIdentifier(id)
-//        }
-//        set {
-//            FlickrClient.Caches.imageCache.storeImage(newValue, withIdentifier: id)
-//        }
-//    }
+    var image: UIImage? {
+        get {
+            //return FlickrClient.Caches.imageCache.imageWithIdentifier(id)
+            return nil
+        }
+        set {
+           // FlickrClient.Caches.imageCache.storeImage(newValue, withIdentifier: id)
+        }
+    }
 }

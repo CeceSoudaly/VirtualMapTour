@@ -137,7 +137,7 @@ class FlickrClient : NSObject {
     
     //MARK:- Shared Image Cache
     
-//    struct Caches {
+    struct Caches {
 //        static let imageCache = ImageCache()
-//    }
+    }
 }

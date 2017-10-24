@@ -17,6 +17,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     @IBOutlet weak var mapView: MKMapView!
     
+    @IBOutlet weak var deleteLabel: UILabel!
     //    var pinchGesture  = UIPinchGestureRecognizer()
     let locationManager =  CLLocationManager()
     
@@ -68,11 +69,16 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             // Fallback on earlier versions
         }
         locationManager.startUpdatingLocation()
+        if(PhotoAlbumViewController.stateFlag == "Delete")
+        {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Delete",style: .plain, target: self, action: #selector(deleteLocation))
+            
+        }else
+        {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Edit",style: .plain, target: self, action: #selector(doneLocation))
+        }
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Done",style: .plain, target: self, action: #selector(doneLocation))
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Edit",style: .plain, target: self, action: #selector(deleteLocation))
-        
+      
         restoreMapRegion(animated: false)
         addTapGesturesToMapView()
         addLongTapGesturesToMapView()
@@ -80,6 +86,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         // Fetch all pins from core data and show in the mapview
         self.locations = fetchAllLocations()
         updateMapViewWithAnnotations()
+        deleteLabel.isHidden = true
     }
     
     func addLongTapGesturesToMapView() {
@@ -110,15 +117,18 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     func handleTap(panGesture: UIPanGestureRecognizer) {
         print("user had tap  !!! ",panGesture)
+        
     }
     
-    func deleteLocation() -> Void {
+    func deleteLocation(panGesture: UIPanGestureRecognizer) -> Void {
         PhotoAlbumViewController.stateFlag = "delete";
+        deleteLabel.isHidden = true
     }
     
     
-    func doneLocation() -> Void {
+    func doneLocation(panGesture: UIPanGestureRecognizer) -> Void {
         PhotoAlbumViewController.stateFlag = "done";
+        deleteLabel.isHidden = false
     }
     
     @IBAction func longPressAction(_ recognizer: UIGestureRecognizer) {
@@ -410,19 +420,19 @@ extension PhotoAlbumViewController {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
-        print("Swift 3 disclosure pressed on: \(String(describing: view.annotation?.title))")
+        print("Swift 4 disclosure pressed on: \(String(describing: view.annotation?.title))")
         
-        if(PhotoAlbumViewController.stateFlag == "done") {
+        //if(PhotoAlbumViewController.stateFlag == "" ) {
             // Show flickr images on right call out
-            //performSegueWithIdentifier("showAlbum", sender: view)
+            performSegue(withIdentifier: "PicGallery", sender: view)
             
-        } else if(PhotoAlbumViewController.stateFlag == "delete"){
+      /*  } else if(PhotoAlbumViewController.stateFlag == "delete"){
             
             // Delete annotation and location on left call out
             locationToUpdate = getMapLocationFromAnnotation(annotation: view.annotation!)
             annotaionToUpdate = view.annotation
             removeMapLocation()
-        }
+        }*/
         
     }
 }
