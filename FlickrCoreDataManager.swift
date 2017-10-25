@@ -62,9 +62,15 @@ extension FlickrClient {
             }
         }
         
-//        dispatch_async(dispatch_get_main_queue()) {
-//            FlickrCoreDataManager.saveContext()
-//        }
+        DispatchQueue.main.async{
+            do{
+                 //try self.sharedContext.save()
+                print("Save to core data :")
+            }
+            catch{
+                print("Error in saving photos")
+            }
+        }
         return task
     }
 }
