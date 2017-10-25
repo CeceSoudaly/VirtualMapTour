@@ -40,7 +40,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     var application = (UIApplication.shared.delegate as! AppDelegate)
     
-    static var stateFlag = "none"
+    static var stateFlag = "view"
     
     // All static varibales used to save data
     struct Keys {
@@ -121,14 +121,16 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     }
     
     func deleteLocation(panGesture: UIPanGestureRecognizer) -> Void {
-        PhotoAlbumViewController.stateFlag = "delete";
+        PhotoAlbumViewController.stateFlag = "Edit";
         deleteLabel.isHidden = true
+         navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Edit",style: .plain, target: self, action: #selector(doneLocation))
     }
     
     
     func doneLocation(panGesture: UIPanGestureRecognizer) -> Void {
-        PhotoAlbumViewController.stateFlag = "done";
+        PhotoAlbumViewController.stateFlag = "delete";
         deleteLabel.isHidden = false
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Done",style: .plain, target: self, action: #selector(deleteLocation))
     }
     
     @IBAction func longPressAction(_ recognizer: UIGestureRecognizer) {
@@ -431,17 +433,17 @@ extension PhotoAlbumViewController {
         
         print("Swift 4 disclosure pressed on: \(String(describing: view.annotation?.title))")
         
-        //if(PhotoAlbumViewController.stateFlag == "" ) {
+        if(PhotoAlbumViewController.stateFlag == "view" ) {
             // Show flickr images on right call out
             performSegue(withIdentifier: "PicGallery", sender: view)
             
-      /*  } else if(PhotoAlbumViewController.stateFlag == "delete"){
+        } else if(PhotoAlbumViewController.stateFlag == "delete"){
             
             // Delete annotation and location on left call out
             locationToUpdate = getMapLocationFromAnnotation(annotation: view.annotation!)
             annotaionToUpdate = view.annotation
             removeMapLocation()
-        }*/
+        }
         
     }
 }
