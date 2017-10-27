@@ -55,10 +55,7 @@ public class Location: NSManagedObject {
             {
                 self.subtitle =  Subtitle
             }
-            
-            
-            
-            
+           
             
         } else {
             fatalError("Unable to find Entity name!")

@@ -30,6 +30,11 @@ public class Photo: NSManagedObject {
         static let PageNumber = "pageNumber"
     }
     
+    // Init method to insert object in core data
+    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+       super.init(entity: entity, insertInto: context)
+    }
+    
     
     convenience init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
         
@@ -41,46 +46,26 @@ public class Photo: NSManagedObject {
             self.id = dictionary[Keys.Id] as! String
             self.title = dictionary[Keys.Name] as! String
             self.imageUrl = dictionary[Keys.ImageUrl] as! String
-            downloadStatus = false
+            self.downloadStatus = false
             self.pageNumber = dictionary[Keys.PageNumber] as! NSNumber
         } else {
             fatalError("Unable to find Entity name!")
         }
     }
-
-//    // Init method to insert object in core data
-//    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
-//        super.init(entity: entity, insertIntoManagedObjectContext: context)
-//    }
     
-    // Init method that will convert photo dictionary into managed object and insert in core data
-//    init(dictionary: [String : AnyObject], context: NSManagedObjectContext) {
-//        
-//        let entity =  NSEntityDescription.entityForName("Photo", inManagedObjectContext: context)!
-//        
-//        super.init(entity: entity,insertIntoManagedObjectContext: context)
-//        
-//        id = dictionary[Keys.Id] as! String
-//        title = dictionary[Keys.Name] as! String
-//        imageUrl = dictionary[Keys.ImageUrl] as! String
-//        downloadStatus = false
-//        pageNumber = dictionary[Keys.PageNumber] as! NSNumber
-//    }
-//    
-//    // This method will first delete the underlying image file from documents directory when a photo object is removed from core data
-//    override func prepareForDeletion() {
-//        super.prepareForDeletion()
-//        self.image = nil
-//    }
-//    
-//    // Download image to documents directory and retrieve it using image identifier
+    // This method will first delete the underlying image file from documents directory when a photo object is removed from core data
+    override public func prepareForDeletion() {
+        super.prepareForDeletion()
+        self.image = nil
+    }
+
+    // Download image to documents directory and retrieve it using image identifier
     var image: UIImage? {
         get {
-            //return FlickrClient.Caches.imageCache.imageWithIdentifier(id)
-            return nil
+            return FlickrClient.Caches.imageCache.imageWithIdentifier(identifier: id)
         }
         set {
-           // FlickrClient.Caches.imageCache.storeImage(newValue, withIdentifier: id)
+            FlickrClient.Caches.imageCache.storeImage(image: newValue, withIdentifier: id)
         }
     }
 }
