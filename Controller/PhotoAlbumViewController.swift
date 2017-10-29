@@ -316,7 +316,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         } catch let error as NSError  {
             print("Could not save \(error), \(error.userInfo)")
         } catch {
-            
+             print("Could not save")
         }
         locationToUpdate = nil
         annotaionToUpdate = nil
@@ -433,7 +433,7 @@ extension PhotoAlbumViewController {
         
         print("Swift 4 disclosure pressed on: \(String(describing: view.annotation?.title))")
         
-        if(PhotoAlbumViewController.stateFlag == "view" ) {
+        if(PhotoAlbumViewController.stateFlag != "delete" ) {
             // Show flickr images on right call out
             performSegue(withIdentifier: "PicGallery", sender: view)
             
