@@ -67,10 +67,10 @@ class PicGalleryViewController: UIViewController, UICollectionViewDataSource,UIC
         super.viewWillAppear(animated)
         
         // This is called rarely - as Flickr photos are already fetched when pin is dropped on the map in previous view controller
-        if location.photos.isEmpty {
-            var currentPageNumber = 0
-            loadNewCollection(currentPageNumber: currentPageNumber)
-        }
+//        if location.photos.isEmpty {
+//            var currentPageNumber = 0
+//            loadNewCollection(currentPageNumber: currentPageNumber)
+//        }
     }
     
     func loadNewCollection(currentPageNumber _: Int)

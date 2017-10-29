@@ -178,7 +178,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         // Fetch exact map location from annotation view
        for location in self.locations {
             for var i in 0..<self.locations.count {
-                if((self.locations[i].title)?.contains(annotation.title as! String))!
+                if((self.locations[i].title).contains(annotation.title as! String))
                 {
                     return location
                     i -= 1
@@ -349,8 +349,16 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
                 Location.Keys.Title: annotation.title! as AnyObject,
                 Location.Keys.Subtitle: annotation.subtitle! as AnyObject
             ]
+            
+            let entityDescription = NSEntityDescription.entity(forEntityName: "Location", in: self.sharedContext)
+            let newLocation = NSManagedObject(entity: entityDescription!, insertInto: self.sharedContext)
+            
+           // let newLocation = NSEntityDescription.insertNewObject(forEntityName: "Location", into: self.sharedContext)
+           
+            
+            //newLocation.setValue(item["LastName"], forKey: "lastname")
     
-            let locationToBeAdded = Location(entity: locationDictionary, insertInto: sharedContext)
+            let locationToBeAdded = Location(entity: entityDescription!, insertInto: sharedContext)
             self.locations.append(locationToBeAdded)
             
             try self.sharedContext.save()
