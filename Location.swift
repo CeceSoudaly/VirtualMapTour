@@ -2,22 +2,22 @@
 //  Location+CoreDataClass.swift
 //  VirtualMapTour
 //
-//  Created by Cece Soudaly on 9/8/17.
+//  Created by Cece Soudaly on 10/28/17.
 //  Copyright © 2017 CeceMobile. All rights reserved.
 //
-
+//
 import Foundation
 import CoreData
 
 
-public class Location: NSManagedObject {
+class Location: NSManagedObject {
     
     // Core data object attributes
     @NSManaged var title: String
     @NSManaged var subtitle: String
     @NSManaged var latitude: Double
     @NSManaged var longitude: Double
-    @NSManaged var photos: [Photo]
+  //  @NSManaged var photos: [Photo]
     
     // Keys to convert dictionary into object
     struct Keys {
@@ -34,7 +34,8 @@ public class Location: NSManagedObject {
         // the information you provided in the Entity part of the model
         // you need it to create an instance of this class.
         if let ent = NSEntityDescription.entity(forEntityName: "Location", in: context) {
-            self.init(entity: ent, insertInto: context)
+            
+            self.init(dictionary: ent, context: context)
             
             if let longitude = dictionary[Keys.Longitude]  as? Double
             {
@@ -43,24 +44,26 @@ public class Location: NSManagedObject {
             
             if let Latitude = dictionary[Keys.Latitude]  as? Double
             {
-                self.latitude = Latitude
+                //self.latitude = Latitude
             }
             
             if let Title = dictionary[Keys.Title]  as? String
             {
-                self.title =  Title
+                //self.title =  Title
             }
             
             if let Subtitle = dictionary[Keys.Subtitle]  as? String
             {
-                self.subtitle =  Subtitle
+               // self.subtitle =  Subtitle
             }
-           
+            
             
         } else {
             fatalError("Unable to find Entity name!")
         }
     }
-
-
+    
+    
 }
+
+

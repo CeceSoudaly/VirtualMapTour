@@ -115,19 +115,19 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         mapView.addAnnotations(annotations)
     }
     
-    func handleTap(panGesture: UIPanGestureRecognizer) {
-        print("user had tap  !!! ",panGesture)
+    @objc func handleTap(panGesture: UIPanGestureRecognizer) {
+        print("user had tap Testing !!! ",panGesture)
         
     }
     
-    func deleteLocation(panGesture: UIPanGestureRecognizer) -> Void {
+    @objc func deleteLocation(panGesture: UIPanGestureRecognizer) -> Void {
         PhotoAlbumViewController.stateFlag = "Edit";
         deleteLabel.isHidden = true
          navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Edit",style: .plain, target: self, action: #selector(doneLocation))
     }
     
     
-    func doneLocation(panGesture: UIPanGestureRecognizer) -> Void {
+    @objc func doneLocation(panGesture: UIPanGestureRecognizer) -> Void {
         PhotoAlbumViewController.stateFlag = "delete";
         deleteLabel.isHidden = false
         navigationItem.rightBarButtonItem = UIBarButtonItem(title:"Done",style: .plain, target: self, action: #selector(deleteLocation))
@@ -178,7 +178,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         // Fetch exact map location from annotation view
        for location in self.locations {
             for var i in 0..<self.locations.count {
-                if((self.locations[i].title).contains(annotation.title as! String))
+                if((self.locations[i].title)?.contains(annotation.title as! String))!
                 {
                     return location
                     i -= 1
@@ -350,7 +350,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
                 Location.Keys.Subtitle: annotation.subtitle! as AnyObject
             ]
     
-            let locationToBeAdded = Location(dictionary: locationDictionary, context: sharedContext)
+            let locationToBeAdded = Location(entity: locationDictionary, insertInto: sharedContext)
             self.locations.append(locationToBeAdded)
             
             try self.sharedContext.save()

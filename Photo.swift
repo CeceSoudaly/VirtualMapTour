@@ -2,16 +2,16 @@
 //  Photo+CoreDataClass.swift
 //  VirtualMapTour
 //
-//  Created by Cece Soudaly on 8/28/17.
+//  Created by Cece Soudaly on 10/28/17.
 //  Copyright © 2017 CeceMobile. All rights reserved.
+//
 //
 
 import Foundation
 import CoreData
 import UIKit
 
-
-public class Photo: NSManagedObject {
+class Photo: NSManagedObject {
     
     // Core data object attributes
     @NSManaged var id: String
@@ -32,7 +32,7 @@ public class Photo: NSManagedObject {
     
     // Init method to insert object in core data
     override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
-       super.init(entity: entity, insertInto: context)
+        super.init(entity: entity, insertInto: context)
     }
     
     
@@ -58,7 +58,7 @@ public class Photo: NSManagedObject {
         super.prepareForDeletion()
         self.image = nil
     }
-
+    
     // Download image to documents directory and retrieve it using image identifier
     var image: UIImage? {
         get {
@@ -68,4 +68,5 @@ public class Photo: NSManagedObject {
             FlickrClient.Caches.imageCache.storeImage(image: newValue, withIdentifier: id)
         }
     }
+    
 }
