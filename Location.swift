@@ -33,15 +33,17 @@ class Location: NSManagedObject {
         super.init(entity: entity, insertInto: context)
     }
     
-    convenience init(dictionary:[String:AnyObject],context: NSManagedObjectContext) {
+     init(dictionary:[String:AnyObject],context: NSManagedObjectContext) {
+      
         
         // An EntityDescription is an object that has access to all
         // the information you provided in the Entity part of the model
         // you need it to create an instance of this class.
         if let ent = NSEntityDescription.entity(forEntityName: "Location", in: context) {
-            let entity = NSEntityDescription.entity(forEntityName: "Location", in: context)!
+           let entity = NSEntityDescription.entity(forEntityName: "Location", in: context)!
             
-            self.init(entity: entity, insertInto: context)
+            //Call inherited init method. This inserts our entity into the context
+            super.init(entity: entity, insertInto: context)
             
             title = dictionary[Keys.Title] as! String
             subtitle = dictionary[Keys.Subtitle] as! String

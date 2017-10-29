@@ -349,16 +349,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
                 Location.Keys.Title: annotation.title! as AnyObject,
                 Location.Keys.Subtitle: annotation.subtitle! as AnyObject
             ]
-            
-            let entityDescription = NSEntityDescription.entity(forEntityName: "Location", in: self.sharedContext)
-            let newLocation = NSManagedObject(entity: entityDescription!, insertInto: self.sharedContext)
-            
-           // let newLocation = NSEntityDescription.insertNewObject(forEntityName: "Location", into: self.sharedContext)
-           
-            
-            //newLocation.setValue(item["LastName"], forKey: "lastname")
     
-            let locationToBeAdded = Location(entity: entityDescription!, insertInto: sharedContext)
+            let locationToBeAdded = Location(dictionary: locationDictionary, context: self.sharedContext)
             self.locations.append(locationToBeAdded)
             
             try self.sharedContext.save()
