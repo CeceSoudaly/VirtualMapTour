@@ -17,7 +17,7 @@ class Location: NSManagedObject {
     @NSManaged var subtitle: String
     @NSManaged var latitude: Double
     @NSManaged var longitude: Double
-  //  @NSManaged var photos: [Photo]
+    @NSManaged var photos: [Photo]
     
     // Keys to convert dictionary into object
     struct Keys {

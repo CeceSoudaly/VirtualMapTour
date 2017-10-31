@@ -11,10 +11,14 @@ import UIKit
 import CoreData
 import MapKit
 
-class PicGalleryViewController: UIViewController, UICollectionViewDataSource,UICollectionViewDelegate,NSFetchedResultsControllerDelegate {
+private let reuseIdentifier = "PicGallery"
+
+class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UICollectionViewDataSource,UICollectionViewDelegate,NSFetchedResultsControllerDelegate {
     
     // Location object for which Flickr images are displayed in collection view
     var location:Location!
+    var photoData:[Photo] = [Photo]()
+    var currentPage = 0
     
     // Track index paths for Selection, Insertion, Update and Deletion of images
     var selectedIndexes = [NSIndexPath]()
@@ -27,6 +31,8 @@ class PicGalleryViewController: UIViewController, UICollectionViewDataSource,UIC
     
     @IBOutlet weak var locationMapView: MKMapView!
     @IBOutlet weak var photoCollectionView: UICollectionView!
+  
+    
     @IBOutlet weak var newPhotoCollectionButton: UIBarButtonItem!
     @IBOutlet weak var dataDownloadActivityIndicator: UIActivityIndicatorView!
     
@@ -35,61 +41,59 @@ class PicGalleryViewController: UIViewController, UICollectionViewDataSource,UIC
     //MARK:- Life cycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.navigationController?.navigationBar.hidden = false
-//        self.navigationController?.navigationItem.hidesBackButton = false
-//        self.navigationController?.toolbarHidden = false
-//
-//        //Display the annotation for location
-//        setMapRegionAndAddAnnotation(true)
-//
-//        dataDownloadActivityIndicator.startAnimating()
-//
-//        // Start the fetched results controller
-        do {
-                var error: NSError?
-                try fetchedResultsController.performFetch()
-                if let error = error {
-                    print("Error performing initial fetch: \(error)")
-                }
-                fetchedResultsController.delegate = self
-        } catch let error as NSError  {
-            print("Could not save \(error), \(error.userInfo)")
-        } catch {
-            
-        }
+        locationMapView.delegate = self
+        // Register cell classes
+        photoCollectionView.delegate = self
+        photoCollectionView.dataSource = self
+        photoCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        //addSelectedAnnotation()
+        print("selected pin location: \(location)")
         
-//
-//        // Tool bar button to toggle New collection and Save collection button
-//        updateToolbarButton()
+        fetchPhotos()
+        
+        // MARK: Set spacing between items
+       // let space: CGFloat = 3.0
+       // let viewWidth = self.view.frame.width
+       // let dimension: CGFloat = (viewWidth-(2*space))/3.0
+        
+       // flowLayout.minimumInteritemSpacing = space
+     //   flowLayout.minimumLineSpacing = space
+      //  flowLayout.itemSize = CGSize(width: dimension, height: dimension)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // This is called rarely - as Flickr photos are already fetched when pin is dropped on the map in previous view controller
-//        if location.photos.isEmpty {
-//            var currentPageNumber = 0
-//            loadNewCollection(currentPageNumber: currentPageNumber)
-//        }
+        if location.photos.isEmpty {
+            var currentPageNumber = 0
+            loadNewCollection(currentPageNumber: currentPageNumber)
+        }
     }
     
-    func loadNewCollection(currentPageNumber _: Int)
-    {
-        //Pre-Fetch photos entites related to this location and save to core data
-        
-//        FlickrClient.sharedInstance().prefetchPhotosForLocationAndSaveToDataContext(locationToBeAdded) {
-//            error in
-//            if let errorMessage = error {
-//                println(errorMessage.localizedDescription)
-//            }
-//        }
+    //Locad new flickr image collection by taking into account next page number
+    func loadNewCollection(currentPageNumber: Int) {
+        dataTask = FlickrClient.sharedInstance().fetchPhotosForNewAlbumAndSaveToDataContext(location: location , nextPageNumber: currentPageNumber + 1) {
+            error in
+            if let errorMessage = error {
+                DispatchQueue.main.async() {
+                    var alert =  UIAlertController(title: "Search Error", message: errorMessage.localizedDescription, preferredStyle: .alert)
+                    let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+                    alert.addAction(action)
+                    self.present(alert, animated: true, completion: {
+                        self.dataDownloadActivityIndicator.stopAnimating()
+                    })
+                }
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         // Remove the delegate reference
-        fetchedResultsController.delegate = nil
+        //NSFetchedResultsController.delegate = nil
+   
         
         // Stop all the downloading tasks
         if dataTask?.state == URLSessionTask.State.running {
@@ -115,14 +119,14 @@ class PicGalleryViewController: UIViewController, UICollectionViewDataSource,UIC
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
      
-        let sectionInfo = self.fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
+        let sectionInfo = self.fetchResultController.sections![section] as! NSFetchedResultsSectionInfo
         return sectionInfo.numberOfObjects
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionView", for: indexPath) as! PhotoCollectionView
         
-     //   configureCell(cell, atIndexPath: indexPath)
+        configureCell(cell: cell, atIndexPath: indexPath as NSIndexPath)
         
         return cell
     }
@@ -133,7 +137,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDataSource,UIC
         //dataDownloadActivityIndicator.stopAnimating()
         
         // Show the placeholder image till the time image is being downloaded
-        let photo = self.fetchedResultsController.object(at: indexPath as IndexPath) as! Photo
+        let photo = self.fetchResultController.object(at: indexPath as IndexPath) as! Photo
         var cellImage = UIImage(named: "imagePlaceholder")
         cell.photoImage.image = nil
         
@@ -198,7 +202,57 @@ class PicGalleryViewController: UIViewController, UICollectionViewDataSource,UIC
     }
     //MARK:- Core Data
     
-    lazy var fetchedResultsController: NSFetchedResultsController = { () -> NSFetchedResultsController<NSFetchRequestResult> in
+    func fetchPhotos(){
+        
+        //MARK: Fetch Request
+        let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest() as! NSFetchRequest<Photo>
+        fetchRequest.sortDescriptors = []
+        fetchRequest.predicate = NSPredicate(format: "location = %@", self.location)
+        let context = self.sharedContext
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        do {
+            try fetchedResultsController.performFetch()
+            
+        } catch {
+            let fetchError = error as NSError
+            print("Unable to Perform Fetch Request")
+            print("\(fetchError), \(fetchError.localizedDescription)")
+        }
+        
+        if let data = fetchedResultsController.fetchedObjects, data.count > 0 {
+            print("\(data.count) photos from core data fetched.")
+            photoData = data
+            self.photoCollectionView.reloadData()
+        } else {
+           getPhotosFromFlickr(page:currentPage)
+        }
+    }
+    
+    //MARK: get new photos from flickr
+    func getPhotosFromFlickr(page:Int){
+        
+//        FlickrClient.getImagesFromFlickr(location,currentPage) { (results, error) in
+//
+//            guard error == nil else {
+//                self.displayAlert(title: "Could not get photos from flickr", message: error?.localizedDescription)
+//                return
+//            }
+//            // add results to photoData and reload collectionview
+//            performUIUpdatesOnMain {
+//                if results != nil {
+//                    self.photoData = results!
+//
+//                    print("\(self.photoData.count) photos from flickr fetched")
+//                    self.photoCollectionView.reloadData()
+//                }
+//            }
+//        }
+    }
+    
+    //MARK:- Core Data
+    
+    lazy var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> = {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         fetchRequest.sortDescriptors = []
         fetchRequest.predicate = NSPredicate(format: "location == %@", self.location)

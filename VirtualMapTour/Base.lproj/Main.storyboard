@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -129,8 +130,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="locationMapView" destination="1Cm-ho-XCW" id="QXU-8Q-2Ro"/>
-                        <outlet property="photoCollectionView" destination="gR7-Iz-o15" id="dg4-J2-RlK"/>
+                        <outlet property="locationMapView" destination="1Cm-ho-XCW" id="3Ir-ex-OYV"/>
+                        <outlet property="photoCollectionView" destination="gR7-Iz-o15" id="gDg-5u-SGV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B6d-ck-mzt" userLabel="First Responder" sceneMemberID="firstResponder"/>
