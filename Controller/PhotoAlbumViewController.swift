@@ -371,6 +371,21 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         
     }
     
+//    func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if let annotaionView = sender as? MKAnnotationView {
+//            let controller = segue.destination as! PicGalleryViewController
+//            controller.location = getMapLocationFromAnnotation(annotation: annotaionView.annotation!)
+//        }
+//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "PicGallery"{
+            if let annotaionView = sender as? MKAnnotationView {
+                let controller = segue.destination as! PicGalleryViewController
+                controller.location = getMapLocationFromAnnotation(annotation: annotaionView.annotation!)
+            }
+        }
+    }
+    
     //MARK:- Core Data Operations
     var sharedContext: NSManagedObjectContext {
         return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -428,6 +443,8 @@ extension PhotoAlbumViewController {
         default: break
         }
     }
+    
+    
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
