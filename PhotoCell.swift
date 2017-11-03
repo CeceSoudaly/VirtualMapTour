@@ -8,22 +8,14 @@
 
 import UIKit
 
-class PhotoCollectionView: UICollectionViewCell {
+class PhotoCell: UICollectionViewCell {
 
+    
     @IBOutlet weak var photoImage: UIImageView!
 
     @IBOutlet weak var deleteButton: UIButton!
 
     @IBOutlet weak var photoDownloadActivityIndicator: UIActivityIndicatorView!
     
-    // Cancel download task when collection view cell is reused
-//    var taskToCancelifCellIsReused: URLSessionTask{
-//        
-//        didSet {
-//            if let taskToCancel = oldValue {
-//                taskToCancel.cancel()
-//            }
-//        }
-//    }
     
 }

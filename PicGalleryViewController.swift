@@ -15,10 +15,16 @@ private let reuseIdentifier = "PicGallery"
 
 class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UICollectionViewDataSource,UICollectionViewDelegate,NSFetchedResultsControllerDelegate {
     
+    
     // Location object for which Flickr images are displayed in collection view
     var location:Location!
     var photoData:[Photo] = [Photo]()
+    var selectedIndexPaths = [NSIndexPath]()
     var currentPage = 0
+    //MARK:- Core Data Operations
+    var sharedContext: NSManagedObjectContext {
+        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    }
     
     // Track index paths for Selection, Insertion, Update and Deletion of images
     var selectedIndexes = [NSIndexPath]()
@@ -116,28 +122,57 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
         photoCollectionView.collectionViewLayout = layout
     }
     
-    
+//    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+//        return NSFetchedResultsController.sections?.count ?? 0
+//    }
+//    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
      
-        let sectionInfo = self.fetchResultController.sections![section] as! NSFetchedResultsSectionInfo
-        return sectionInfo.numberOfObjects
+        return photoData.count
+    }
+    
+
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! PhotoCell
+        
+        let index = selectedIndexPaths.index(of: indexPath as NSIndexPath)
+        
+        if let index = index {
+            selectedIndexPaths.remove(at: index)
+            cell.photoImage.alpha = 1.0
+        } else {
+            selectedIndexPaths.append(indexPath as NSIndexPath)
+            print(selectedIndexPaths)
+            selectedIndexPaths.sort{$1.row < $0.row}
+            print("Selected IndexPaths: \(selectedIndexPaths)")
+
+            cell.photoImage.alpha = 0.25
+        }
+
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionView", for: indexPath) as! PhotoCollectionView
+      //  <#code#>
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCollectionCell", for: indexPath) as! PhotoCell
         
-        configureCell(cell: cell, atIndexPath: indexPath as NSIndexPath)
+        //configureCell(cell, atIndexPath: indexPath)
         
         return cell
     }
     
     // This method will download the image and display as soon  as the imgae is downloaded
-    func configureCell(cell:PhotoCollectionView, atIndexPath indexPath:NSIndexPath) {
+    func configureCell(cell:PhotoCell, atIndexPath indexPath:NSIndexPath) {
         
-        //dataDownloadActivityIndicator.stopAnimating()
+        dataDownloadActivityIndicator.stopAnimating()
         
         // Show the placeholder image till the time image is being downloaded
-        let photo = self.fetchResultController.object(at: indexPath as IndexPath) as! Photo
+        if cell != nil {
+            //print("\(PhotoCell)")
+        }
+        
+        let photo = photoData[indexPath.row]
+        
         var cellImage = UIImage(named: "imagePlaceholder")
         cell.photoImage.image = nil
         
@@ -166,23 +201,23 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
                     photo.image = image
                     
                     // update the cell later, on the main thread
-                    DispatchQueue.main.async{
+                    DispatchQueue.main.async() {
                         
                         photo.downloadStatus = true
                         cell.photoImage.image = image
                         cell.photoDownloadActivityIndicator.stopAnimating()
                         
                         // Update the state of the image that it is downloaded
-//                        CoreDataStackManager.sharedInstance().saveContext()
+                      // self.sharedContext.save()
                         
-//                        self.updateToolbarButton()
+                       // self.updateToolbarButton()
                     }
                 } else {
                     print("Data is not convertible to Image Data.")
                     cell.photoDownloadActivityIndicator.stopAnimating()
                 }
             }
-//            cell.taskToCancelifCellIsReused = task
+           // cell.taskToCancelifCellIsReused = task
         }
         
         cell.photoImage.image = cellImage
@@ -196,10 +231,7 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
 //            cell.photoImage.alpha = 1.0
 //        }
     }
-    //MARK:- Core Data Operations
-    var sharedContext: NSManagedObjectContext {
-        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    }
+ 
     //MARK:- Core Data
     
     func fetchPhotos(){
@@ -225,40 +257,36 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
             photoData = data
             self.photoCollectionView.reloadData()
         } else {
-           getPhotosFromFlickr(page:currentPage)
+           getPhotosFromFlickr(currentPageNumber:currentPage)
         }
     }
     
-    //MARK: get new photos from flickr
-    func getPhotosFromFlickr(page:Int){
-        
-//        FlickrClient.getImagesFromFlickr(location,currentPage) { (results, error) in
-//
-//            guard error == nil else {
-//                self.displayAlert(title: "Could not get photos from flickr", message: error?.localizedDescription)
-//                return
-//            }
-//            // add results to photoData and reload collectionview
-//            performUIUpdatesOnMain {
-//                if results != nil {
-//                    self.photoData = results!
-//
-//                    print("\(self.photoData.count) photos from flickr fetched")
-//                    self.photoCollectionView.reloadData()
-//                }
-//            }
-//        }
+    //MARK: get new collection of photos from flickr
+
+    func getPhotosFromFlickr(currentPageNumber: Int) {
+        dataTask = FlickrClient.sharedInstance().fetchPhotosForNewAlbumAndSaveToDataContext(location: location , nextPageNumber: currentPageNumber + 1) {
+            error in
+            if let errorMessage = error {
+                DispatchQueue.main.async() {
+                    var alert =  UIAlertController(title: "Search Error", message: errorMessage.localizedDescription, preferredStyle: .alert)
+                    let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+                    alert.addAction(action)
+                    self.present(alert, animated: true, completion: {
+                    self.dataDownloadActivityIndicator.stopAnimating()
+                    })
+                }
+            }
+        }
     }
-    
     //MARK:- Core Data
     
-    lazy var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> = {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
-        fetchRequest.sortDescriptors = []
-        fetchRequest.predicate = NSPredicate(format: "location == %@", self.location)
-        let fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
-        return fetchResultController
-    }()
+//    lazy var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> = {
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+//        fetchRequest.sortDescriptors = []
+//        fetchRequest.predicate = NSPredicate(format: "location == %@", self.location)
+//        let fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
+//        return fetchResultController
+//    }()
     
 }
 
