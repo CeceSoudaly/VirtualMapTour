@@ -125,9 +125,9 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
 //    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
 //        return NSFetchedResultsController.sections?.count ?? 0
 //    }
-//    
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-     
+    
         return photoData.count
     }
     
@@ -154,9 +154,9 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
       //  <#code#>
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCollectionCell", for: indexPath) as! PhotoCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
         
-        //configureCell(cell, atIndexPath: indexPath)
+        configureCell(cell: cell, atIndexPath: indexPath as NSIndexPath)
         
         return cell
     }
