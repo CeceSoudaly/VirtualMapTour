@@ -8,6 +8,7 @@
 
 
 import Foundation
+import UIKit
 
 extension FlickrClient {
     
@@ -117,4 +118,5 @@ extension FlickrClient {
         return task
         
     }
+   
 }

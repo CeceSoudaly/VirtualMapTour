@@ -5,8 +5,9 @@
 //  Created by Cece Soudaly on 9/2/17.
 //  Copyright © 2017 CeceMobile. All rights reserved.
 //
-
+import UIKit
 import Foundation
+import CoreData
 
 
 class FlickrClient : NSObject {
@@ -47,6 +48,150 @@ class FlickrClient : NSObject {
         return task
         
     }
+    
+    
+    func getImagesFromFlickr(_ location: Location, _ page: Int, _ completionHandler: @escaping (_ result: [Photo]?, _ error: NSError?) -> Void) {
+     
+        
+        let methodParameters: [String:String] = [
+           ParameterKeys.Method  : Methods.SearchPhotosbyLatLon,
+           ParameterKeys.ApiKey: Constant.ApiKey,
+           // Constants.FlickrParameterKeys.BoundingBox: bboxString(longitude:selectedPin.longitude , latitude: selectedPin.latitude),
+            ParameterKeys.Latitude: "\(location.latitude)",
+            ParameterKeys.Longitude: "\(location.longitude)",
+            ParameterKeys.photosPerPage: "21",
+            ParameterKeys.pageNumber: "\(page)",
+            ParameterKeys.Safesearch: Constant.Safesearch,
+            ParameterKeys.Extras: Constant.BaseURL,
+           // ParameterKeys.DataFormat: Constants.FlickrParameterValues.ResponseFormat,
+            ParameterKeys.NOJSONCallback: Constant.No_JSON_CALLBACK
+        ]
+        // create session and request
+        //Build URL and configure Request
+        let urlString = Constant.BaseURL  + FlickrClient.escapedParameters(parameters: methodParameters as [String : AnyObject])
+        let url1 = URL(string: urlString)!
+        
+        print("make the request", url1)
+        
+        let request = URLRequest(url: url1 as URL)
+        
+        
+        let task = taskForGETMethod(request: request) { (parsedResult, error) in
+            
+            // display error
+            func displayError(_ error: String) {
+                let userInfo = [NSLocalizedDescriptionKey : error]
+                completionHandler(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+            }
+            
+            /* GUARD: Did Flickr return an error (stat != ok)? */
+            guard let stat = parsedResult?[Constant.Status] as? String, stat == Constant.OKStatus else {
+                displayError("Flickr API returned an error. See error code and message in \(parsedResult)")
+                return
+            }
+            
+            /* GUARD: Is the "photos" key in our result? */
+            guard let photosDictionary = parsedResult?[JSONResponseKeys.Photos] as? [String:AnyObject] else {
+                displayError("Cannot find key '\(JSONResponseKeys.Photos)' in \(parsedResult)")
+                return
+            }
+            
+            /* GUARD: Is the "photo" key in photosDictionary? */
+            guard let photosArray = photosDictionary[JSONResponseKeys.Photo] as? [[String: AnyObject]] else {
+                displayError("Cannot find key '\(JSONResponseKeys.Photo)' in \(photosDictionary)")
+                return
+            }
+            
+            DispatchQueue.main.async(){
+                
+                    let context = self.sharedContext
+                    //let photo:Photo = NSEntityDescription.insertNewObject(forEntityName: "Photo", into: context ) as! Photo
+                    var imageUrlStrings = [Photo]()
+                
+                    for url in photosArray {
+                        guard let urlString = url[Constant.Extras] as? String else {
+                            displayError("Cannot find key '\(Constant.Extras)' in \(photosArray)")
+                            return
+                        }
+                        
+                        let photo:Photo = NSEntityDescription.insertNewObject(forEntityName: "Photo", into: context ) as! Photo
+                     
+                     do {
+                            //print(urlString)
+                            photo.imageUrl = urlString
+                            photo.location = location
+                            imageUrlStrings.append(photo)
+                      
+                            try self.sharedContext.save()
+                        
+                        } catch let error as NSError  {
+                            print("Could not save \(error), \(error.userInfo)")
+                        } catch {
+                            print("Could not save")
+                        }
+                    
+                }
+                completionHandler(imageUrlStrings, nil)
+            }
+            
+        }
+        
+        // start the task!
+        task.resume()
+    }
+    
+    // MARK: GETMethod
+    private func taskForGETMethod(request:URLRequest, _ completionHandlerForGET: @escaping(_ result: AnyObject?, _ error: NSError?) -> Void)-> URLSessionDataTask {
+        // create network request
+        let task = session.dataTask(with: request) { (data, response, error) in
+            
+            // display error
+            func displayError(_ error: String) {
+                let userInfo = [NSLocalizedDescriptionKey : error]
+                completionHandlerForGET(nil, NSError(domain: "taskForGETMethod", code: 1, userInfo: userInfo))
+            }
+            
+            /* GUARD: Was there an error? */
+            guard (error == nil) else {
+                displayError("There was an error with your request: \(error)")
+                return
+            }
+            
+            /* GUARD: Did we get a successful 2XX response? */
+            guard let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode >= 200 && statusCode <= 299 else {
+                displayError("Your request returned a status code other than 2xx!")
+                return
+            }
+            
+            /* GUARD: Was there any data returned? */
+            guard let data = data else {
+                displayError("No data was returned by the request!")
+                return
+            }
+            
+           // self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
+        }
+        
+        task.resume()
+        return task
+    }
+    
+    // MARK: Helper for Creating a URL from Parameters
+    
+    private func flickrURLFromParameters(_ parameters: [String:String]) -> URL {
+        
+        var components = URLComponents()
+       // components.url = Constant.BaseURL
+       
+        components.queryItems = [URLQueryItem]()
+        
+        for (key, value) in parameters {
+            let queryItem = URLQueryItem(name: key, value: "\(value)")
+            components.queryItems!.append(queryItem)
+        }
+        return components.url!
+    }
+    
     
 //    // Display error
     class func manageErrors(data: NSData?, response: URLResponse?, error: NSError?, completionHandler: (_ result: AnyObject?, _ error: NSError?) -> Void) {

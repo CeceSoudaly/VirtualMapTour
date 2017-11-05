@@ -21,6 +21,8 @@ extension FlickrClient {
         static let DataFormat = "json"
         static let No_JSON_CALLBACK = "1"
         static let photosPerPage = 21
+        static let Status = "stat"
+        static let OKStatus = "ok"
     }
     
     //MARK:- Flickr methods to download data

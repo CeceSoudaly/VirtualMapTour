@@ -35,11 +35,14 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
     // Datatask to fetch images for new collection
     var dataTask: URLSessionDataTask?
     
-    @IBOutlet weak var locationMapView: MKMapView!
+//    @IBOutlet weak var locationMapView: MKMapView!
     @IBOutlet weak var photoCollectionView: UICollectionView!
-  
     
-    @IBOutlet weak var newPhotoCollectionButton: UIBarButtonItem!
+  
+    @IBOutlet weak var layout: UICollectionViewFlowLayout!
+    
+    
+    //@IBOutlet weak var newPhotoCollectionButton: UIBarButtonItem!
     @IBOutlet weak var dataDownloadActivityIndicator: UIActivityIndicatorView!
     
     
@@ -47,7 +50,7 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
     //MARK:- Life cycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationMapView.delegate = self
+       // locationMapView.delegate = self
         // Register cell classes
         photoCollectionView.delegate = self
         photoCollectionView.dataSource = self
@@ -58,18 +61,18 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
         fetchPhotos()
         
         // MARK: Set spacing between items
-       // let space: CGFloat = 3.0
-       // let viewWidth = self.view.frame.width
-       // let dimension: CGFloat = (viewWidth-(2*space))/3.0
-        
-       // flowLayout.minimumInteritemSpacing = space
-     //   flowLayout.minimumLineSpacing = space
-      //  flowLayout.itemSize = CGSize(width: dimension, height: dimension)
+        let space: CGFloat = 3.0
+        let viewWidth = self.view.frame.width
+        let dimension: CGFloat = (viewWidth-(2*space))/3.0
+   
+        layout.minimumInteritemSpacing = space
+        layout.minimumLineSpacing = space
+        layout.itemSize = CGSize(width: dimension, height: dimension)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         // This is called rarely - as Flickr photos are already fetched when pin is dropped on the map in previous view controller
         if location.photos.isEmpty {
             var currentPageNumber = 0
@@ -77,7 +80,7 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
         }
     }
     
-    //Locad new flickr image collection by taking into account next page number
+    // new flickr image collection by taking into account next page number
     func loadNewCollection(currentPageNumber: Int) {
         dataTask = FlickrClient.sharedInstance().fetchPhotosForNewAlbumAndSaveToDataContext(location: location , nextPageNumber: currentPageNumber + 1) {
             error in
@@ -94,18 +97,18 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
         }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Remove the delegate reference
-        //NSFetchedResultsController.delegate = nil
-   
-        
-        // Stop all the downloading tasks
-        if dataTask?.state == URLSessionTask.State.running {
-            dataTask?.cancel()
-        }
-    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        
+//        // Remove the delegate reference
+//        //NSFetchedResultsController.delegate = nil
+//   
+//        
+//        // Stop all the downloading tasks
+//        if dataTask?.state == URLSessionTask.State.running {
+//            dataTask?.cancel()
+//        }
+//    }
     
     //Layout collection view
     override func viewDidLayoutSubviews() {
@@ -127,7 +130,7 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
 //    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    
+         print("photoData.count: \(photoData.count)")
         return photoData.count
     }
     
@@ -264,18 +267,32 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
     //MARK: get new collection of photos from flickr
 
     func getPhotosFromFlickr(currentPageNumber: Int) {
-        dataTask = FlickrClient.sharedInstance().fetchPhotosForNewAlbumAndSaveToDataContext(location: location , nextPageNumber: currentPageNumber + 1) {
-            error in
-            if let errorMessage = error {
-                DispatchQueue.main.async() {
-                    var alert =  UIAlertController(title: "Search Error", message: errorMessage.localizedDescription, preferredStyle: .alert)
-                    let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
-                    alert.addAction(action)
-                    self.present(alert, animated: true, completion: {
-                    self.dataDownloadActivityIndicator.stopAnimating()
-                    })
+        
+        FlickrClient.sharedInstance().getImagesFromFlickr(location,currentPage) { (results, error) in
+            
+            guard error == nil else {
+                self.displayAlert(title: "Could not get photos from flickr", message: error?.localizedDescription)
+                return
+            }
+            // add results to photoData and reload collectionview
+           DispatchQueue.main.async() {
+                if results != nil {
+                    self.photoData = results!
+                    
+                    print("\(self.photoData.count) photos from flickr fetched")
+                    self.photoCollectionView.reloadData()
                 }
             }
+        }
+    }
+    
+    // Alert
+    func displayAlert(title:String, message:String?) {
+        
+        if let message = message {
+            let alert = UIAlertController(title: title, message: "\(message)", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+            // present(alert, animated: true, completion: nil)
         }
     }
     //MARK:- Core Data
