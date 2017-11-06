@@ -1,3 +1,4 @@
+
 //
 //  FlickrClient.swift
 //  VirtualMapTour
@@ -54,27 +55,24 @@ class FlickrClient : NSObject {
      
         
         let methodParameters: [String:String] = [
-           ParameterKeys.Method  : Methods.SearchPhotosbyLatLon,
-           ParameterKeys.ApiKey: Constant.ApiKey,
-           // Constants.FlickrParameterKeys.BoundingBox: bboxString(longitude:selectedPin.longitude , latitude: selectedPin.latitude),
+            ParameterKeys.Method  : Methods.SearchPhotosbyLatLon,
+            ParameterKeys.ApiKey: Constant.ApiKey,
+            ParameterKeys.BoundingBox: bboxString(longitude:location.longitude , latitude: location.latitude),
             ParameterKeys.Latitude: "\(location.latitude)",
             ParameterKeys.Longitude: "\(location.longitude)",
             ParameterKeys.photosPerPage: "21",
             ParameterKeys.pageNumber: "\(page)",
             ParameterKeys.Safesearch: Constant.Safesearch,
-            ParameterKeys.Extras: Constant.BaseURL,
-           // ParameterKeys.DataFormat: Constants.FlickrParameterValues.ResponseFormat,
+            ParameterKeys.Extras: Constant.Extras,
+            ParameterKeys.Dataformat: Constant.DataFormat,
             ParameterKeys.NOJSONCallback: Constant.No_JSON_CALLBACK
         ]
         // create session and request
         //Build URL and configure Request
-        let urlString = Constant.BaseURL  + FlickrClient.escapedParameters(parameters: methodParameters as [String : AnyObject])
-        let url1 = URL(string: urlString)!
+        let request = URLRequest(url: flickrURLFromParameters(methodParameters))
         
-        print("make the request", url1)
-        
-        let request = URLRequest(url: url1 as URL)
-        
+        print("make the request", request)
+  
         
         let task = taskForGETMethod(request: request) { (parsedResult, error) in
             
@@ -169,27 +167,25 @@ class FlickrClient : NSObject {
                 return
             }
             
-           // self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
+            self.convertDataWithCompletionHandler(data, completionHandlerForConvertData: completionHandlerForGET)
         }
         
         task.resume()
         return task
     }
     
-    // MARK: Helper for Creating a URL from Parameters
-    
-    private func flickrURLFromParameters(_ parameters: [String:String]) -> URL {
+    // given raw JSON, return a usable Foundation object
+    private func convertDataWithCompletionHandler(_ data: Data, completionHandlerForConvertData: (_ result: AnyObject?, _ error: NSError?) -> Void) {
         
-        var components = URLComponents()
-       // components.url = Constant.BaseURL
-       
-        components.queryItems = [URLQueryItem]()
-        
-        for (key, value) in parameters {
-            let queryItem = URLQueryItem(name: key, value: "\(value)")
-            components.queryItems!.append(queryItem)
+        var parsedResult: AnyObject! = nil
+        do {
+            parsedResult = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
+        } catch {
+            let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
+            completionHandlerForConvertData(nil, NSError(domain: "convertDataWithCompletionHandler", code: 1, userInfo: userInfo))
         }
-        return components.url!
+        
+        completionHandlerForConvertData(parsedResult, nil)
     }
     
     
@@ -270,7 +266,30 @@ class FlickrClient : NSObject {
         
         return (!urlVars.isEmpty ? "?" : "") + urlVars.joined(separator: "&")
     }
+    
+    private func flickrURLFromParameters(_ parameters: [String:String]) -> URL {
+        
+        var components = URLComponents()
+        components.scheme = Flickr.APIScheme
+        components.host = Flickr.APIHost
+        components.path = Flickr.APIPath
+        components.queryItems = [URLQueryItem]()
+        
+        for (key, value) in parameters {
+            let queryItem = URLQueryItem(name: key, value: "\(value)")
+            components.queryItems!.append(queryItem)
+        }
+        return components.url!
+    }
 
+    
+    func bboxString(longitude:Double, latitude:Double) -> String {
+        let minimumLon = max(longitude - Flickr.SearchBBoxHalfWidth,Flickr.SearchLonRange.0)
+        let minimumLat = max(latitude - Flickr.SearchBBoxHalfHeight, Flickr.SearchLatRange.0)
+        let maximumLon = min(longitude + Flickr.SearchBBoxHalfWidth, Flickr.SearchLonRange.1)
+        let maximumLat = min(latitude + Flickr.SearchBBoxHalfHeight, Flickr.SearchLatRange.1)
+        return "\(minimumLon),\(minimumLat),\(maximumLon),\(maximumLat)"
+    }
     //MARK:- SharedInstance
     
     class func sharedInstance()-> FlickrClient {

@@ -6,14 +6,13 @@
 //  Copyright © 2017 CeceMobile. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import CoreData
 import MapKit
 
 private let reuseIdentifier = "PicGallery"
 
-class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UICollectionViewDataSource,UICollectionViewDelegate,NSFetchedResultsControllerDelegate {
+class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate, NSFetchedResultsControllerDelegate {
     
     
     // Location object for which Flickr images are displayed in collection view
@@ -70,15 +69,16 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
         layout.itemSize = CGSize(width: dimension, height: dimension)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        // This is called rarely - as Flickr photos are already fetched when pin is dropped on the map in previous view controller
-        if location.photos.isEmpty {
-            var currentPageNumber = 0
-            loadNewCollection(currentPageNumber: currentPageNumber)
-        }
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//
+//        // This is called rarely - as Flickr photos are already fetched when pin is dropped on the map in previous view controller
+//        if location.photos.isEmpty {
+//            var currentPageNumber = 0
+//            //loadNewCollection(currentPageNumber: currentPageNumber)
+//             fetchPhotos()
+//        }
+//    }
     
     // new flickr image collection by taking into account next page number
     func loadNewCollection(currentPageNumber: Int) {
@@ -102,7 +102,7 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
 //        
 //        // Remove the delegate reference
 //        //NSFetchedResultsController.delegate = nil
-//   
+//
 //        
 //        // Stop all the downloading tasks
 //        if dataTask?.state == URLSessionTask.State.running {
@@ -274,7 +274,7 @@ class PicGalleryViewController: UIViewController, MKMapViewDelegate, CLLocationM
                 self.displayAlert(title: "Could not get photos from flickr", message: error?.localizedDescription)
                 return
             }
-            // add results to photoData and reload collectionview
+          
            DispatchQueue.main.async() {
                 if results != nil {
                     self.photoData = results!

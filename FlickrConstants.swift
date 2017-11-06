@@ -23,6 +23,7 @@ extension FlickrClient {
         static let photosPerPage = 21
         static let Status = "stat"
         static let OKStatus = "ok"
+        
     }
     
     //MARK:- Flickr methods to download data
@@ -42,6 +43,7 @@ extension FlickrClient {
         static let NOJSONCallback = "nojsoncallback"
         static let pageNumber = "page"
         static let photosPerPage = "per_page"
+        static let BoundingBox = "bbox"
         
     }
     // MARK: - JSON Response Keys
@@ -51,6 +53,18 @@ extension FlickrClient {
         static let Photo = "photo"
         static let Message = "msg"
         
+    }
+    
+    // MARK: Flickr
+    struct Flickr {
+        static let APIScheme = "https"
+        static let APIHost = "api.flickr.com"
+        static let APIPath = "/services/rest"
+        
+        static let SearchBBoxHalfWidth = 1.0
+        static let SearchBBoxHalfHeight = 1.0
+        static let SearchLatRange = (-90.0, 90.0)
+        static let SearchLonRange = (-180.0, 180.0)
     }
     
 }
