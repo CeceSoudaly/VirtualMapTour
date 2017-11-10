@@ -166,7 +166,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         do{
             //Create the fetch request
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Location")
-            results = try self.sharedContext.fetch(fetchRequest) as! [Location]
+            results = try CoreDataStackManager.getContext().fetch(fetchRequest) as! [Location]
         }
         catch{
             print("Error in fetchAllLocations")
@@ -309,15 +309,16 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             deletePin(locationToDelete: locationToUpdate!)
         }
         
-        do {
-            try self.sharedContext.save()
+       // do {
+          //  try self.sharedContext.save()
+            CoreDataStackManager.saveContext()
             
             print("Share context save what do you have???",self.fetchAllLocations().count)
-        } catch let error as NSError  {
+    /*    } catch let error as NSError  {
             print("Could not save \(error), \(error.userInfo)")
         } catch {
              print("Could not save")
-        }
+        }*/
         locationToUpdate = nil
         annotaionToUpdate = nil
         
@@ -332,7 +333,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         for objectDelete in results {
         if(objectDelete.longitude == locationToDelete.longitude)
             {
-                self.sharedContext.delete(objectDelete)
+                //self.sharedContext.delete(objectDelete)
+              CoreDataStackManager.getContext().delete(objectDelete)
+              CoreDataStackManager.saveContext()
                 break
             }
         }
@@ -350,10 +353,11 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
                 Location.Keys.Subtitle: annotation.subtitle! as AnyObject
             ]
     
-            let locationToBeAdded = Location(dictionary: locationDictionary, context: self.sharedContext)
+            let locationToBeAdded = Location(dictionary: locationDictionary, context: CoreDataStackManager.getContext())
             self.locations.append(locationToBeAdded)
             
-            try self.sharedContext.save()
+           // try self.sharedContext.save()
+             CoreDataStackManager.saveContext()
             
             //Pre-Fetch photos entites related to this location and save to core data
             
@@ -375,15 +379,16 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         if segue.identifier == "PicGallery"{
             if let annotaionView = sender as? MKAnnotationView {
                 let controller = segue.destination as! PicGalleryViewController
-                controller.location = getMapLocationFromAnnotation(annotation: annotaionView.annotation!)
+                controller.location = self.locationToUpdate
+             //   controller.location = getMapLocationFromAnnotation(annotation: annotaionView.annotation!)
             }
         }
     }
     
     //MARK:- Core Data Operations
-    var sharedContext: NSManagedObjectContext {
-        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    }
+//    var sharedContext: NSManagedObjectContext {
+//        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//    }
 }
 
 extension PhotoAlbumViewController {
@@ -443,16 +448,18 @@ extension PhotoAlbumViewController {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
         print("Swift 4 disclosure pressed on: \(String(describing: view.annotation?.title))")
+        //Set the current locatin of the pin
+        self.locationToUpdate = getMapLocationFromAnnotation(annotation: view.annotation!)
+        
+         print("after: \(self.locationToUpdate))")
         
         if(PhotoAlbumViewController.stateFlag != "delete" ) {
             // Show flickr images on right call out
             performSegue(withIdentifier: "PicGallery", sender: view)
             
         } else if(PhotoAlbumViewController.stateFlag == "delete"){
-            
             // Delete annotation and location on left call out
-            locationToUpdate = getMapLocationFromAnnotation(annotation: view.annotation!)
-            annotaionToUpdate = view.annotation
+             annotaionToUpdate = view.annotation
             removeMapLocation()
         }
         

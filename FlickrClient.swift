@@ -103,7 +103,6 @@ class FlickrClient : NSObject {
             DispatchQueue.main.async(){
                 
                     let context = self.sharedContext
-                    //let photo:Photo = NSEntityDescription.insertNewObject(forEntityName: "Photo", into: context ) as! Photo
                     var imageUrlStrings = [Photo]()
                 
                     for url in photosArray {
@@ -111,16 +110,16 @@ class FlickrClient : NSObject {
                             displayError("Cannot find key '\(Constant.Extras)' in \(photosArray)")
                             return
                         }
+                      
+                        //keep the creation of the photo and location creation by dictionary.
+                        let photo = Photo(dictionary: photosDictionary, context: CoreDataStackManager.getContext())
                         
-                        let photo:Photo = NSEntityDescription.insertNewObject(forEntityName: "Photo", into: context ) as! Photo
-                     
                      do {
-                            //print(urlString)
                             photo.imageUrl = urlString
                             photo.location = location
                             imageUrlStrings.append(photo)
-                      
-                            try self.sharedContext.save()
+                        
+                            try CoreDataStackManager.saveContext()
                         
                         } catch let error as NSError  {
                             print("Could not save \(error), \(error.userInfo)")
@@ -298,6 +297,7 @@ class FlickrClient : NSObject {
         }
         return Singleton.sharedInstance
     }
+    
     
     //MARK:- Shared Image Cache
     

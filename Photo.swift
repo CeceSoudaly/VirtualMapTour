@@ -14,12 +14,12 @@ import UIKit
 class Photo: NSManagedObject {
     
     // Core data object attributes
-    @NSManaged var id: String
-    @NSManaged var title: String
-    @NSManaged var imageUrl: String
+    @NSManaged var id: String?
+    @NSManaged var title: String?
+    @NSManaged var imageUrl: String?
     @NSManaged var downloadStatus: Bool
-    @NSManaged var location: Location
-    @NSManaged var pageNumber: NSNumber
+    @NSManaged var location: Location?
+    @NSManaged var pageNumber: NSNumber?
     
     // Keys to convert dictionary into object
     struct Keys {
@@ -43,11 +43,25 @@ class Photo: NSManagedObject {
         // you need it to create an instance of this class.
         if let ent = NSEntityDescription.entity(forEntityName: "Photo", in: context) {
             self.init(entity: ent, insertInto: context)
-            self.id = dictionary[Keys.Id] as! String
-            self.title = dictionary[Keys.Name] as! String
-            self.imageUrl = dictionary[Keys.ImageUrl] as! String
+           
+            if(dictionary[Keys.Id] != nil ){
+                 self.id = dictionary[Keys.Id] as! String
+            }
+            
+            if(dictionary[Keys.Name]  != nil ){
+               self.title = dictionary[Keys.Name] as! String
+            }
+            
+            if(dictionary[Keys.ImageUrl]  != nil ){
+               self.imageUrl = dictionary[Keys.ImageUrl] as! String
+            }
+            
+            if(dictionary[Keys.PageNumber]  != nil ){
+                self.pageNumber = dictionary[Keys.PageNumber] as! NSNumber
+            }
+           
             self.downloadStatus = false
-            self.pageNumber = dictionary[Keys.PageNumber] as! NSNumber
+           
         } else {
             fatalError("Unable to find Entity name!")
         }
@@ -65,7 +79,7 @@ class Photo: NSManagedObject {
             return FlickrClient.Caches.imageCache.imageWithIdentifier(identifier: id)
         }
         set {
-            FlickrClient.Caches.imageCache.storeImage(image: newValue, withIdentifier: id)
+            FlickrClient.Caches.imageCache.storeImage(image: newValue, withIdentifier: id!)
         }
     }
     

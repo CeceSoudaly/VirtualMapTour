@@ -156,7 +156,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-      //  <#code#>
+ 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
         
         configureCell(cell: cell, atIndexPath: indexPath as NSIndexPath)
@@ -189,7 +189,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
             
             cell.photoDownloadActivityIndicator.startAnimating()
             
-            let task = FlickrClient.sharedInstance().taskForImage(filePath: photo.imageUrl) {
+            let task = FlickrClient.sharedInstance().taskForImage(filePath: photo.imageUrl!) {
                 data, error in
                 if let downloaderror = error {
                     print("Flick image download error: \(downloaderror.localizedDescription)")

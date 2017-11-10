@@ -162,8 +162,8 @@
 				A90EDCBE1FA4F06E00626332 /* Photo.swift */,
 				A90EDCBB1FA4ED8900626332 /* Model.xcdatamodeld */,
 				A90EDCC01FA4F06E00626332 /* Location.swift */,
-				A9109A471F5CEA1400D668E4 /* FlickrCoreDataManager.swift */,
 				A9109A491F5CEA8800D668E4 /* CoreDataStackManager.swift */,
+				A9109A471F5CEA1400D668E4 /* FlickrCoreDataManager.swift */,
 			);
 			name = Model;
 			path = /Users/cecesoudaly/Desktop/VirtualMapTour;
