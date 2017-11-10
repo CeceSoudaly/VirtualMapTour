@@ -101,9 +101,7 @@ class FlickrClient : NSObject {
             }
             
             DispatchQueue.main.async(){
-                
-                    let context = self.sharedContext
-                    var imageUrlStrings = [Photo]()
+                     var imageUrlStrings = [Photo]()
                 
                     for url in photosArray {
                         guard let urlString = url[Constant.Extras] as? String else {

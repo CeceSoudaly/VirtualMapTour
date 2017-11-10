@@ -124,17 +124,11 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
         layout.itemSize = CGSize(width: width, height: width)
         photoCollectionView.collectionViewLayout = layout
     }
-    
-//    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-//        return NSFetchedResultsController.sections?.count ?? 0
-//    }
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
          print("photoData.count: \(photoData.count)")
         return photoData.count
     }
-    
-
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! PhotoCell
@@ -157,7 +151,8 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
  
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
+    
         
         configureCell(cell: cell, atIndexPath: indexPath as NSIndexPath)
         
@@ -167,7 +162,8 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
     // This method will download the image and display as soon  as the imgae is downloaded
     func configureCell(cell:PhotoCell, atIndexPath indexPath:NSIndexPath) {
         
-        dataDownloadActivityIndicator.stopAnimating()
+        
+      //  dataDownloadActivityIndicator.stopAnimating()
         
         // Show the placeholder image till the time image is being downloaded
         if cell != nil {
@@ -180,48 +176,27 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
         cell.photoImage.image = nil
         
         // Set the flickr image if already available (from hard disk or image cache)
-        if photo.image != nil {
-            cellImage = photo.image
+        if photo.imageData != nil {
+            DispatchQueue.main.async() {
+                cell.photoDownloadActivityIndicator.stopAnimating()
+            }
+            cell.photoImage.image = UIImage(data: photo.imageData as! Data)
         } else {
             
-            //If image is not available, download the flickr image
-            //Start the task that will eventually download the image
-            
-            cell.photoDownloadActivityIndicator.startAnimating()
-            
-            let task = FlickrClient.sharedInstance().taskForImage(filePath: photo.imageUrl!) {
-                data, error in
-                if let downloaderror = error {
-                    print("Flick image download error: \(downloaderror.localizedDescription)")
-                    cell.photoDownloadActivityIndicator.stopAnimating()
+            FlickrClient.sharedInstance().taskForImage(filePath: photo.imageUrl!) { (results, error) in
+                
+                guard let imageData = results else {
+                  //  self.displayAlert(title: "Image data error", message: error)
+                    return
                 }
-                if let imageData = data {
-                    
-                    // Create the image
-                    let image = UIImage(data: imageData as Data)
-                    
-                    // Update the model so that information gets cached
-                    photo.image = image
-                    
-                    // update the cell later, on the main thread
-                    DispatchQueue.main.async() {
-                        
-                        photo.downloadStatus = true
-                        cell.photoImage.image = image
-                        cell.photoDownloadActivityIndicator.stopAnimating()
-                        
-                        // Update the state of the image that it is downloaded
-                      // self.sharedContext.save()
-                        
-                       // self.updateToolbarButton()
-                    }
-                } else {
-                    print("Data is not convertible to Image Data.")
+                
+                DispatchQueue.main.async(){
+                    photo.imageData = imageData as NSData?
                     cell.photoDownloadActivityIndicator.stopAnimating()
+                    cell.photoImage.image = UIImage(data: photo.imageData as! Data)
                 }
-            }
-           // cell.taskToCancelifCellIsReused = task
-        }
+                
+            }        }
         
         cell.photoImage.image = cellImage
         
@@ -295,15 +270,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
             // present(alert, animated: true, completion: nil)
         }
     }
-    //MARK:- Core Data
-    
-//    lazy var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> = {
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
-//        fetchRequest.sortDescriptors = []
-//        fetchRequest.predicate = NSPredicate(format: "location == %@", self.location)
-//        let fetchResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
-//        return fetchResultController
-//    }()
+   
     
 }
 

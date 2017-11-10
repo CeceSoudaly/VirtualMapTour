@@ -336,7 +336,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
                 //self.sharedContext.delete(objectDelete)
               CoreDataStackManager.getContext().delete(objectDelete)
               CoreDataStackManager.saveContext()
-                break
+              break
             }
         }
         

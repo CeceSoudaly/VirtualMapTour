@@ -14,12 +14,13 @@ import UIKit
 class Photo: NSManagedObject {
     
     // Core data object attributes
-    @NSManaged var id: String?
-    @NSManaged var title: String?
-    @NSManaged var imageUrl: String?
-    @NSManaged var downloadStatus: Bool
-    @NSManaged var location: Location?
-    @NSManaged var pageNumber: NSNumber?
+    @NSManaged public var id: String?
+    @NSManaged public var title: String?
+    @NSManaged public var imageUrl: String?
+    @NSManaged public var downloadStatus: Bool
+    @NSManaged public var location: Location?
+    @NSManaged public var pageNumber: NSNumber?
+    @NSManaged public var imageData: NSData?
     
     // Keys to convert dictionary into object
     struct Keys {
@@ -70,17 +71,17 @@ class Photo: NSManagedObject {
     // This method will first delete the underlying image file from documents directory when a photo object is removed from core data
     override public func prepareForDeletion() {
         super.prepareForDeletion()
-        self.image = nil
+//        self.image = nil
     }
     
     // Download image to documents directory and retrieve it using image identifier
-    var image: UIImage? {
-        get {
-            return FlickrClient.Caches.imageCache.imageWithIdentifier(identifier: id)
-        }
-        set {
-            FlickrClient.Caches.imageCache.storeImage(image: newValue, withIdentifier: id!)
-        }
-    }
+//    var image: UIImage? {
+//        get {
+//            return FlickrClient.Caches.imageCache.imageWithIdentifier(identifier: id)
+//        }
+//        set {
+//            FlickrClient.Caches.imageCache.storeImage(image: newValue, withIdentifier: id!)
+//        }
+//    }
     
 }

@@ -50,17 +50,16 @@ extension FlickrClient {
                     //Parse the array of PhotosArrayDictionary
                     var photos = photosArrayDictionary.map() {
                         (dictionary: [String:AnyObject]) -> Photo in
-                        var newDictionary = dictionary
-                        newDictionary["pageNumber"] = newPageNumber as AnyObject
+                        var photosDictionary = dictionary
+                        photosDictionary["pageNumber"] = newPageNumber as AnyObject
                         
-                        let photoToBeAdded = Photo(dictionary: newDictionary, context: self.sharedContext)
+                        //let photoToBeAdded = Photo(dictionary: newDictionary, context: self.sharedContext)
+                        //keep the creation of the photo and location creation by dictionary.
+                        let photoToBeAdded = Photo(dictionary: photosDictionary, context: CoreDataStackManager.getContext())
                         
-                        //photoToBeAdded.location = location
-                        photoToBeAdded.location?.latitude = location.latitude;
-                        photoToBeAdded.location?.longitude = location.longitude;
-                        photoToBeAdded.location?.subtitle  = location.subtitle;
-                        photoToBeAdded.location?.title = location.title;
                         
+                        photoToBeAdded.location = location
+                         
                         return photoToBeAdded
                     }
                 }
