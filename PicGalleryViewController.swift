@@ -69,16 +69,6 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
         layout.itemSize = CGSize(width: dimension, height: dimension)
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//        // This is called rarely - as Flickr photos are already fetched when pin is dropped on the map in previous view controller
-//        if location.photos.isEmpty {
-//            var currentPageNumber = 0
-//            //loadNewCollection(currentPageNumber: currentPageNumber)
-//             fetchPhotos()
-//        }
-//    }
     
     // new flickr image collection by taking into account next page number
     func loadNewCollection(currentPageNumber: Int) {
@@ -96,20 +86,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
             }
         }
     }
-    
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        
-//        // Remove the delegate reference
-//        //NSFetchedResultsController.delegate = nil
-//
-//        
-//        // Stop all the downloading tasks
-//        if dataTask?.state == URLSessionTask.State.running {
-//            dataTask?.cancel()
-//        }
-//    }
-    
+
     //Layout collection view
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -213,8 +190,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
         let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest() as! NSFetchRequest<Photo>
         fetchRequest.sortDescriptors = []
         fetchRequest.predicate = NSPredicate(format: "location = %@", self.location)
-        let context = self.sharedContext
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataStackManager.getContext(), sectionNameKeyPath: nil, cacheName: nil)
         
         do {
             try fetchedResultsController.performFetch()

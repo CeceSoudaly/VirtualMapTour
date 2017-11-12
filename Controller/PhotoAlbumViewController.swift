@@ -216,6 +216,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             }
              // Add to mapView
             self.mapView.addAnnotation(newAnnotation!)
+            //save
+            self.addMapLocation(annotation: newAnnotation!)
              
         })
     }
@@ -361,7 +363,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         if segue.identifier == "PicGallery"{
             if let annotaionView = sender as? MKAnnotationView {
                 let controller = segue.destination as! PicGalleryViewController
-
+                 controller.location =  self.locationToUpdate
             }
         }
     }
