@@ -180,7 +180,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             for var i in 0..<self.locations.count {
                 if((self.locations[i].title).contains(annotation.title as! String))
                 {
-                    return location
+                    return self.locations[i]
                     i -= 1
                 }
             }
@@ -214,19 +214,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
                     newAnnotation!.title = annotationSubtitle
                 }
             }
-            
-            // Add to mapView
+             // Add to mapView
             self.mapView.addAnnotation(newAnnotation!)
-            
-            DispatchQueue.main.async() {
-                
-                // Add this annotation point to core data as Location object
-                self.addMapLocation(annotation: newAnnotation!)
-                if self.locationToUpdate != nil  {
-                    self.removeMapLocation()
-                }
-            }
-            
+             
         })
     }
     
@@ -309,16 +299,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             deletePin(locationToDelete: locationToUpdate!)
         }
         
-       // do {
-          //  try self.sharedContext.save()
-            CoreDataStackManager.saveContext()
-            
-            print("Share context save what do you have???",self.fetchAllLocations().count)
-    /*    } catch let error as NSError  {
-            print("Could not save \(error), \(error.userInfo)")
-        } catch {
-             print("Could not save")
-        }*/
+        CoreDataStackManager.saveContext()
+        print("Share context save what do you have???",self.fetchAllLocations().count)
+    
         locationToUpdate = nil
         annotaionToUpdate = nil
         
@@ -360,7 +343,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
              CoreDataStackManager.saveContext()
             
             //Pre-Fetch photos entites related to this location and save to core data
-            
             FlickrClient.sharedInstance().prefetchPhotosForLocationAndSaveToDataContext(location: locationToBeAdded) {
                 error in
                 if let errorMessage = error {
@@ -379,16 +361,11 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         if segue.identifier == "PicGallery"{
             if let annotaionView = sender as? MKAnnotationView {
                 let controller = segue.destination as! PicGalleryViewController
-                controller.location = self.locationToUpdate
-             //   controller.location = getMapLocationFromAnnotation(annotation: annotaionView.annotation!)
+
             }
         }
     }
-    
-    //MARK:- Core Data Operations
-//    var sharedContext: NSManagedObjectContext {
-//        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//    }
+  
 }
 
 extension PhotoAlbumViewController {
@@ -449,10 +426,11 @@ extension PhotoAlbumViewController {
         
         print("Swift 4 disclosure pressed on: \(String(describing: view.annotation?.title))")
         //Set the current locatin of the pin
+        locationToUpdate = nil
+        annotaionToUpdate = nil
         self.locationToUpdate = getMapLocationFromAnnotation(annotation: view.annotation!)
-        
-         print("after: \(self.locationToUpdate))")
-        
+        annotaionToUpdate = view.annotation
+      
         if(PhotoAlbumViewController.stateFlag != "delete" ) {
             // Show flickr images on right call out
             performSegue(withIdentifier: "PicGallery", sender: view)
@@ -460,7 +438,7 @@ extension PhotoAlbumViewController {
         } else if(PhotoAlbumViewController.stateFlag == "delete"){
             // Delete annotation and location on left call out
              annotaionToUpdate = view.annotation
-            removeMapLocation()
+             removeMapLocation()
         }
         
     }

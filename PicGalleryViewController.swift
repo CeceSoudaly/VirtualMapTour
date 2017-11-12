@@ -197,17 +197,12 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
                 }
                 
             }        }
-        
-        cell.photoImage.image = cellImage
-        
-        //If the cell is selected, it will show delete button
-//        if let index = find(selectedIndexes, indexPath) {
-//            cell.deleteButton.hidden = false
-//            cell.photoImage.alpha = 0.5
-//        } else {
-//            cell.deleteButton.hidden = true
-//            cell.photoImage.alpha = 1.0
-//        }
+        if selectedIndexPaths.index(of: indexPath as NSIndexPath) != nil {
+            cell.photoImage.alpha = 0.25
+        }else {
+            cell.photoImage.alpha = 1.0
+        }
+      
     }
  
     //MARK:- Core Data
@@ -238,9 +233,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
            getPhotosFromFlickr(currentPageNumber:currentPage)
         }
     }
-    
-    //MARK: get new collection of photos from flickr
-
+ 
     func getPhotosFromFlickr(currentPageNumber: Int) {
         
         FlickrClient.sharedInstance().getImagesFromFlickr(location,currentPage) { (results, error) in
