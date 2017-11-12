@@ -40,6 +40,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
   
     @IBOutlet weak var layout: UICollectionViewFlowLayout!
     
+    @IBOutlet weak var locationMapView: MKMapView!
     
     //@IBOutlet weak var newPhotoCollectionButton: UIBarButtonItem!
     @IBOutlet weak var dataDownloadActivityIndicator: UIActivityIndicatorView!
@@ -49,12 +50,12 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
     //MARK:- Life cycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-       // locationMapView.delegate = self
+        locationMapView.delegate = self
         // Register cell classes
         photoCollectionView.delegate = self
         photoCollectionView.dataSource = self
         photoCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        //addSelectedAnnotation()
+        addSelectedAnnotation()
         print("selected pin location: \(location)")
         
         fetchPhotos()
@@ -69,7 +70,23 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
         layout.itemSize = CGSize(width: dimension, height: dimension)
     }
     
-    
+    //Mark: Show Selected Pin on MapView
+    func addSelectedAnnotation(){
+        let annotation = MKPointAnnotation()
+        let lat = CLLocationDegrees(location.latitude)
+        let lon = CLLocationDegrees(location.longitude)
+        let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        annotation.coordinate = coordinate
+        
+        //zoom into an appropriate region
+        let span = MKCoordinateSpanMake(0.25, 0.25)
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        
+        DispatchQueue.main.async() {
+            self.locationMapView.addAnnotation(annotation)
+            self.locationMapView.setRegion(region, animated: true)
+        }
+    }
     // new flickr image collection by taking into account next page number
     func loadNewCollection(currentPageNumber: Int) {
         dataTask = FlickrClient.sharedInstance().fetchPhotosForNewAlbumAndSaveToDataContext(location: location , nextPageNumber: currentPageNumber + 1) {
