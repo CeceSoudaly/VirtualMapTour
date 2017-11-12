@@ -318,7 +318,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         for objectDelete in results {
         if(objectDelete.longitude == locationToDelete.longitude)
             {
-                //self.sharedContext.delete(objectDelete)
               CoreDataStackManager.getContext().delete(objectDelete)
               CoreDataStackManager.saveContext()
               break
@@ -390,7 +389,7 @@ extension PhotoAlbumViewController {
             //Right call out button to display Flickr images
             pinView!.rightCalloutAccessoryView =  UIButton(type: UIButtonType.detailDisclosure)
             
-            //  Left call out button as delete pin button
+            //  Left call out button as delete location button
             let deleteLocationButton = UIButton(type: UIButtonType.system)
             deleteLocationButton.frame = CGRect(x:0, y:0, width:200, height:300)
             //            deleteLocationButton.setImage(UIImage(named: "deleteLocation"), for: UIControlState.normal)

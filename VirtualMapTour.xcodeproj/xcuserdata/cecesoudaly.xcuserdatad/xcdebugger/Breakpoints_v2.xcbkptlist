@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PhotoAlbumViewController.swift"
-            timestampString = "532152825.281766"
+            timestampString = "532200142.985757"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "413"
-            endingLineNumber = "413"
+            startingLineNumber = "412"
+            endingLineNumber = "412"
             landmarkName = "mapView(_:annotationView:didChange:fromOldState:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,7 +106,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PicGalleryViewController.swift"
-            timestampString = "532152825.281825"
+            timestampString = "532200142.985819"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "102"
@@ -122,7 +122,7 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/PicGalleryViewController.swift"
-                  timestampString = "532152825.383832"
+                  timestampString = "532200143.084165"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "102"
@@ -137,12 +137,12 @@
                   moduleName = "VirtualMapTour"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/cecesoudaly/Desktop/VirtualMapTour/PicGalleryViewController.swift"
-                  timestampString = "532152825.38521"
+                  timestampString = "532200143.085399"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "102"
                   endingLineNumber = "102"
-                  offsetFromSymbolStart = "808">
+                  offsetFromSymbolStart = "728">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PicGalleryViewController.swift"
-            timestampString = "532152825.282153"
+            timestampString = "532200142.985871"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "249"
-            endingLineNumber = "249"
+            startingLineNumber = "250"
+            endingLineNumber = "250"
             landmarkName = "PicGalleryViewController"
             landmarkType = "3">
          </BreakpointContent>

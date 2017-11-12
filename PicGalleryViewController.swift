@@ -16,6 +16,8 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
     
     
     // Location object for which Flickr images are displayed in collection view
+   
+    
     var location:Location!
     var photoData:[Photo] = [Photo]()
     var selectedIndexPaths = [NSIndexPath]()
@@ -42,9 +44,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
     
     @IBOutlet weak var locationMapView: MKMapView!
     
-    //@IBOutlet weak var newPhotoCollectionButton: UIBarButtonItem!
-    @IBOutlet weak var dataDownloadActivityIndicator: UIActivityIndicatorView!
-    
+    @IBOutlet weak var newPhotoCollection: UIButton!
     
     
     //MARK:- Life cycle methods
@@ -97,7 +97,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
                     let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
                     alert.addAction(action)
                     self.present(alert, animated: true, completion: {
-                        self.dataDownloadActivityIndicator.stopAnimating()
+                        //self.photoDownloadActivityIndicator.stopAnimating()
                     })
                 }
             }
@@ -146,8 +146,8 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
  
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
-    
-        
+      
+     
         configureCell(cell: cell, atIndexPath: indexPath as NSIndexPath)
         
         return cell
@@ -168,6 +168,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
         
         var cellImage = UIImage(named: "imagePlaceholder")
         cell.photoImage.image = nil
+        cell.photoDownloadActivityIndicator.startAnimating()
         
         // Set the flickr image if already available (from hard disk or image cache)
         if photo.imageData != nil {
