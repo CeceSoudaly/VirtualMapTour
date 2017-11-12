@@ -146,6 +146,9 @@
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f4B-Jz-747">
                                 <rect key="frame" x="0.0" y="637" width="375" height="30"/>
                                 <state key="normal" title="New Photos Collections"/>
+                                <connections>
+                                    <action selector="getNewCollections:" destination="Mdc-fQ-UQc" eventType="touchUpInside" id="T7f-9x-8UD"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

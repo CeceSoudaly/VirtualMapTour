@@ -21,6 +21,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
     var location:Location!
     var photoData:[Photo] = [Photo]()
     var selectedIndexPaths = [NSIndexPath]()
+    var photosSelected = false
     var currentPage = 0
     //MARK:- Core Data Operations
     var sharedContext: NSManagedObjectContext {
@@ -120,7 +121,6 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-         print("photoData.count: \(photoData.count)")
         return photoData.count
     }
     
@@ -227,7 +227,37 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
            getPhotosFromFlickr(currentPageNumber:currentPage)
         }
     }
- 
+    
+    @IBAction func getNewCollections(_ sender: Any) {
+        if photosSelected {
+            removeSelectedPhotos()
+            self.photoCollectionView.reloadData()
+            photosSelected = false
+            //newCollectionButton.setTitle("New Collection", for: .normal)
+        } else {
+            for photo in photoData {
+                CoreDataStackManager.getContext().delete(photo)
+            }
+            CoreDataStackManager.saveContext()
+            currentPage += 1
+            getPhotosFromFlickr(currentPageNumber: currentPage)
+            
+        }
+    }
+    
+    func removeSelectedPhotos() {
+        if selectedIndexPaths.count > 0 {
+            for indexPath in selectedIndexPaths {
+                let photo = photoData[indexPath.row]
+                CoreDataStackManager.getContext().delete(photo)
+                self.photoData.remove(at: indexPath.row)
+                self.photoCollectionView.deleteItems(at: [indexPath as IndexPath])
+                print("photo at row \(indexPath.row) deleted")
+            }
+            CoreDataStackManager.saveContext()
+        }
+        selectedIndexPaths = [NSIndexPath]()
+    }
     func getPhotosFromFlickr(currentPageNumber: Int) {
         
         FlickrClient.sharedInstance().getImagesFromFlickr(location,currentPage) { (results, error) in
