@@ -103,41 +103,6 @@ class CoreDataStackManager {
         
         //return urls[urls.count-1] as! NSURL
     }()
-    
-    // The managed object property for the application
-    lazy var managedObjectModel: NSManagedObjectModel? = {
-        
-        if  let modelURL = Bundle.main.url(forResource: "Model", withExtension: "momd") {
-            if let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL) {
-                return managedObjectModel
-            }
-        }
-        return nil
-    }()
-    
-    lazy var pesistentStoreCoordinator: NSPersistentStoreCoordinator? = {
-        
-        var coordinator: NSPersistentStoreCoordinator? = nil
-        
-        if let objectModel = self.managedObjectModel {
-            coordinator = NSPersistentStoreCoordinator(managedObjectModel: objectModel )
-            
-            if let appURL = self.applicationDocumentsDirectory {
-                
-                let url = appURL.appendingPathComponent(SQLITE_FILE_NAME)
-                
-                var error:NSError? = nil
-                
-//                if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) != nil  {
-//                    return coordinator
-//                }
-            }
-        }
-//        self.raiseFatalCoreDataError(nil)
-        return coordinator
-    }()
-    
-   
    
     
     // MARK: Initializers
@@ -192,22 +157,7 @@ class CoreDataStackManager {
     }
 }
 
-// MARK: - CoreDataStack (Removing Data)
-
-internal extension CoreDataStackManager  {
-    
-    func dropAllData() throws {
-        // delete all the objects in the db. This won't delete the files, it will
-        // just leave empty tables.
-        try coordinator.destroyPersistentStore(at: dbURL, ofType:NSSQLiteStoreType , options: nil)
-        try addStoreCoordinator(NSSQLiteStoreType, configuration: nil, storeURL: dbURL, options: nil)
-    }
-}
-
-
-
 // MARK: - CoreDataStack (Save Data)
-
 extension CoreDataStackManager {
     
     func saveContext() throws {
