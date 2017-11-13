@@ -12,7 +12,7 @@ import MapKit
 
 private let reuseIdentifier = "PicGallery"
 
-class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate, NSFetchedResultsControllerDelegate {
+class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate, NSFetchedResultsControllerDelegate  {
     
     
     // Location object for which Flickr images are displayed in collection view
@@ -137,8 +137,18 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
             print(selectedIndexPaths)
             selectedIndexPaths.sort{$1.row < $0.row}
             print("Selected IndexPaths: \(selectedIndexPaths)")
-
+            
             cell.photoImage.alpha = 0.25
+        }
+        
+        if selectedIndexPaths.count > 0 {
+            newPhotoCollection.setTitle("Delete", for: .normal)
+            photosSelected = true
+            
+        } else {
+            newPhotoCollection.setTitle("New Collection", for: .normal)
+            photosSelected = false
+            
         }
 
     }
@@ -233,7 +243,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
             removeSelectedPhotos()
             self.photoCollectionView.reloadData()
             photosSelected = false
-            //newCollectionButton.setTitle("New Collection", for: .normal)
+            newPhotoCollection.setTitle("New Collection", for: .normal)
         } else {
             for photo in photoData {
                 CoreDataStackManager.getContext().delete(photo)
@@ -284,10 +294,10 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
         if let message = message {
             let alert = UIAlertController(title: title, message: "\(message)", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
-            // present(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
         }
     }
-   
+  
     
 }
 
