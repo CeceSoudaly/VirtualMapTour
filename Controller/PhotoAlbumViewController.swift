@@ -249,11 +249,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         }
         return addressComponents
     }
+    
     //MARK:- MapView and MapRegion
-    
-    // Save the mapRegion using NSKeyedArchiver
-    
-    var mapRegionFilePath: String {
+     var mapRegionFilePath: String {
         let manager = FileManager.default
         let url = manager.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first as! NSURL
         return url.appendingPathComponent(Keys.mapFileName)!.path

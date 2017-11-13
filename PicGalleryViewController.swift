@@ -37,7 +37,6 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
     // Datatask to fetch images for new collection
     var dataTask: URLSessionDataTask?
     
-//    @IBOutlet weak var locationMapView: MKMapView!
     @IBOutlet weak var photoCollectionView: UICollectionView!
     
   
@@ -88,22 +87,6 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
             self.locationMapView.setRegion(region, animated: true)
         }
     }
-    // new flickr image collection by taking into account next page number
-    func loadNewCollection(currentPageNumber: Int) {
-        dataTask = FlickrClient.sharedInstance().fetchPhotosForNewAlbumAndSaveToDataContext(location: location , nextPageNumber: currentPageNumber + 1) {
-            error in
-            if let errorMessage = error {
-                DispatchQueue.main.async() {
-                    var alert =  UIAlertController(title: "Search Error", message: errorMessage.localizedDescription, preferredStyle: .alert)
-                    let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
-                    alert.addAction(action)
-                    self.present(alert, animated: true, completion: {
-                        //self.photoDownloadActivityIndicator.stopAnimating()
-                    })
-                }
-            }
-        }
-    }
 
     //Layout collection view
     override func viewDidLayoutSubviews() {
@@ -144,30 +127,21 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
         if selectedIndexPaths.count > 0 {
             newPhotoCollection.setTitle("Delete", for: .normal)
             photosSelected = true
-            
-        } else {
+         } else {
             newPhotoCollection.setTitle("New Collection", for: .normal)
             photosSelected = false
-            
         }
 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
- 
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
-      
-     
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
         configureCell(cell: cell, atIndexPath: indexPath as NSIndexPath)
-        
         return cell
     }
     
     // This method will download the image and display as soon  as the imgae is downloaded
     func configureCell(cell:PhotoCell, atIndexPath indexPath:NSIndexPath) {
-        
-        
-      //  dataDownloadActivityIndicator.stopAnimating()
         
         // Show the placeholder image till the time image is being downloaded
         if cell != nil {
