@@ -34,7 +34,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     
     var locations = [Location]()
  
-    var application = (UIApplication.shared.delegate as! AppDelegate)
+    //var application = (UIApplication.shared.delegate as! AppDelegate)
     
     static var stateFlag = "view"
     
@@ -134,9 +134,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         if (recognizer.state == UIGestureRecognizerState.ended)
         {
             let touchedAt = recognizer.location(in: self.mapView) // adds the location on the view it was pressed
-            let touchedAtCoordinate : CLLocationCoordinate2D = mapView.convert(touchedAt, toCoordinateFrom: self.mapView) // will
-           // newPin.coordinate = touchedAtCoordinate
-            //update Core Data
+            let touchedAtCoordinate : CLLocationCoordinate2D = mapView.convert(touchedAt, toCoordinateFrom: self.mapView)
             self.addPinToMapAndCoreData(locationPoint: touchedAtCoordinate)
         }
     }
@@ -386,9 +384,9 @@ extension PhotoAlbumViewController {
             //  Left call out button as delete location button
             let deleteLocationButton = UIButton(type: UIButtonType.system)
             deleteLocationButton.frame = CGRect(x:0, y:0, width:200, height:300)
-            //            deleteLocationButton.setImage(UIImage(named: "deleteLocation"), for: UIControlState.normal)
-            //            deleteLocationButton.backgroundColor = UIColor.cyan
-            //            pinView?.leftCalloutAccessoryView = deleteLocationButton
+            deleteLocationButton.setImage(UIImage(named: "deleteLocation"), for: UIControlState.normal)
+            deleteLocationButton.backgroundColor = UIColor.cyan
+            pinView?.leftCalloutAccessoryView = deleteLocationButton
             pinView!.rightCalloutAccessoryView =  deleteLocationButton
             pinView?.isEnabled = true
             annotaionToUpdate = pinView?.annotation
@@ -414,8 +412,6 @@ extension PhotoAlbumViewController {
         default: break
         }
     }
-    
-    
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         

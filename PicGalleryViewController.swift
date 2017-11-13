@@ -59,15 +59,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
         print("selected pin location: \(location)")
         
         fetchPhotos()
-        
-        // MARK: Set spacing between items
-        let space: CGFloat = 3.0
-        let viewWidth = self.view.frame.width
-        let dimension: CGFloat = (viewWidth-(2*space))/3.0
-   
-        layout.minimumInteritemSpacing = space
-        layout.minimumLineSpacing = space
-        layout.itemSize = CGSize(width: dimension, height: dimension)
+    
     }
     
     //Mark: Show Selected Pin on MapView
@@ -91,13 +83,13 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
     //Layout collection view
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+
         // Lay out the collection view so that cells take up 1/3 of the width, with space
         let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        
+
         let width = floor(photoCollectionView.frame.width / 3)
         layout.itemSize = CGSize(width: width, height: width)
         photoCollectionView.collectionViewLayout = layout
@@ -181,7 +173,6 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
         }else {
             cell.photoImage.alpha = 1.0
         }
-      
     }
  
     //MARK:- Core Data
@@ -242,6 +233,7 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
         }
         selectedIndexPaths = [NSIndexPath]()
     }
+    
     func getPhotosFromFlickr(currentPageNumber: Int) {
         
         FlickrClient.sharedInstance().getImagesFromFlickr(location,currentPage) { (results, error) in
