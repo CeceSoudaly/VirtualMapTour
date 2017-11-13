@@ -33,11 +33,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     var annotationView: MKAnnotationView?
     
     var locations = [Location]()
-    
-    let newPin = MKPointAnnotation()
-    
-    //    var fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
-    
+ 
     var application = (UIApplication.shared.delegate as! AppDelegate)
     
     static var stateFlag = "view"
@@ -139,7 +135,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         {
             let touchedAt = recognizer.location(in: self.mapView) // adds the location on the view it was pressed
             let touchedAtCoordinate : CLLocationCoordinate2D = mapView.convert(touchedAt, toCoordinateFrom: self.mapView) // will
-            newPin.coordinate = touchedAtCoordinate
+           // newPin.coordinate = touchedAtCoordinate
             //update Core Data
             self.addPinToMapAndCoreData(locationPoint: touchedAtCoordinate)
         }
