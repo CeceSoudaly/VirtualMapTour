@@ -413,7 +413,6 @@ extension PhotoAlbumViewController {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
-        print("Swift 4 disclosure pressed on: \(String(describing: view.annotation?.title))")
         //Set the current locatin of the pin
         locationToUpdate = nil
         annotaionToUpdate = nil
