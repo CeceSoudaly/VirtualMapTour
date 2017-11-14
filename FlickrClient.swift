@@ -109,7 +109,7 @@ class FlickrClient : NSObject {
                             return
                         }
                       
-                        //keep the creation of the photo and location creation by dictionary.
+                        //Keep photo and location object consistence, both are created by dictionary.
                         let photo = Photo(dictionary: photosDictionary, context: CoreDataStackManager.getContext())
                         
                      do {
@@ -295,11 +295,5 @@ class FlickrClient : NSObject {
         }
         return Singleton.sharedInstance
     }
-    
-    
-    //MARK:- Shared Image Cache
-    
-    struct Caches {
-        static let imageCache = ImageCache()
-    }
+   
 }

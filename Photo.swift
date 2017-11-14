@@ -68,20 +68,4 @@ class Photo: NSManagedObject {
         }
     }
     
-    // This method will first delete the underlying image file from documents directory when a photo object is removed from core data
-    override public func prepareForDeletion() {
-        super.prepareForDeletion()
-//        self.image = nil
-    }
-    
-    // Download image to documents directory and retrieve it using image identifier
-//    var image: UIImage? {
-//        get {
-//            return FlickrClient.Caches.imageCache.imageWithIdentifier(identifier: id)
-//        }
-//        set {
-//            FlickrClient.Caches.imageCache.storeImage(image: newValue, withIdentifier: id!)
-//        }
-//    }
-    
 }

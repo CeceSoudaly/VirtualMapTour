@@ -64,6 +64,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         } else {
             // Fallback on earlier versions
         }
+        
         locationManager.startUpdatingLocation()
         if(PhotoAlbumViewController.stateFlag == "Delete")
         {
@@ -96,6 +97,11 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         mapView.addGestureRecognizer(panGestureRecognizer)
     }
     
+    @objc func handleTap(panGesture: UIPanGestureRecognizer) {
+        print("user had tap Testing !!! ",panGesture)
+        
+    }
+    
     func updateMapViewWithAnnotations() {
         var annotations = [MKPointAnnotation]()
       
@@ -109,11 +115,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             }
         }
         mapView.addAnnotations(annotations)
-    }
-    
-    @objc func handleTap(panGesture: UIPanGestureRecognizer) {
-        print("user had tap Testing !!! ",panGesture)
-        
     }
     
     @objc func deleteLocation(panGesture: UIPanGestureRecognizer) -> Void {
@@ -138,16 +139,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             self.addPinToMapAndCoreData(locationPoint: touchedAtCoordinate)
         }
     }
-    
-    @IBAction func userRotateAction(_ sender: Any) {
-        
-        print("user userTapAction !!!",sender)
-    }
-    
-    /**
-     tap delete
-     **/
-    
+   
     @IBAction func userTapAction(_ recognizer: UIGestureRecognizer) {
         
         print("current state of the program ", PhotoAlbumViewController.stateFlag)
@@ -211,7 +203,15 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
              // Add to mapView
             self.mapView.addAnnotation(newAnnotation!)
             //save
-            self.addMapLocation(annotation: newAnnotation!)
+            //self.addMapLocation(annotation: newAnnotation!)
+            
+            DispatchQueue.main.async() {
+                // Add this annotation point to core data as Location object
+                self.addMapLocation(annotation: newAnnotation!)
+                if self.locationToUpdate != nil  {
+                    self.removeMapLocation()
+                }
+            }
              
         })
     }
@@ -282,8 +282,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         // Remove annotation
         self.mapView.removeAnnotation(self.annotaionToUpdate!)
         self.locations = fetchAllLocations()
-        
-        print("self.locations" ,self.locations.count)
         
         if let locationToDelete = locationToUpdate {
             //Remove location from array

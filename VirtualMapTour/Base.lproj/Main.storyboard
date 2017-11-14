@@ -119,7 +119,7 @@
                                                     <rect key="frame" x="0.0" y="-6" width="130" height="108"/>
                                                     <color key="backgroundColor" red="0.47606447359999998" green="0.69106886810000001" blue="0.72336632010000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </imageView>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ogy-Ns-2qC">
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ogy-Ns-2qC">
                                                     <rect key="frame" x="55" y="38" width="20" height="20"/>
                                                 </activityIndicatorView>
                                             </subviews>
