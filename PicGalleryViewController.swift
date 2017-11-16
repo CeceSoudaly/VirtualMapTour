@@ -23,10 +23,6 @@ class PicGalleryViewController: UIViewController, UICollectionViewDelegate, UICo
     var selectedIndexPaths = [NSIndexPath]()
     var photosSelected = false
     var currentPage = 0
-    //MARK:- Core Data Operations
-    var sharedContext: NSManagedObjectContext {
-        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    }
     
     // Track index paths for Selection, Insertion, Update and Deletion of images
     var selectedIndexes = [NSIndexPath]()

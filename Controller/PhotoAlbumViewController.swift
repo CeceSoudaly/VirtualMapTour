@@ -27,6 +27,9 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     // Location is updated when pin is dragged from one location to another location
     var locationToUpdate:Location?
     
+    // Location is updated when pin is dragged from one location to another location
+    var locationToRemove:Location?
+    
     // Pin is updated when pin is dragged from one location to another
     var annotaionToUpdate: MKAnnotation?
     
@@ -143,6 +146,21 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
     @IBAction func userTapAction(_ recognizer: UIGestureRecognizer) {
         
         print("current state of the program ", PhotoAlbumViewController.stateFlag)
+        if (recognizer.state == UIGestureRecognizerState.ended)
+        {
+            let touchedAt = recognizer.location(in: self.mapView) // adds the location on the view it was pressed
+            let touchedAtCoordinate : CLLocationCoordinate2D = mapView.convert(touchedAt, toCoordinateFrom: self.mapView)
+            //self.addPinToMapAndCoreData(locationPoint: touchedAtCoordinate)
+            
+            var newAnnotation:MKPointAnnotation?
+            newAnnotation = MKPointAnnotation()
+            newAnnotation!.coordinate = touchedAtCoordinate
+            newAnnotation!.title = Keys.pinTitle
+            newAnnotation!.subtitle = Keys.pinSubtitle
+          
+            self.locationToUpdate = getMapLocationFromAnnotation(annotation: newAnnotation!)
+        }
+        
         
     }
     
@@ -175,7 +193,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         return self.locations.last
     }
     
-    // Add pin annotation after long press gesture
+    // Get the pin location and save it
     func addPinToMapAndCoreData(locationPoint:CLLocationCoordinate2D) {
         
         let newLocation: CLLocation = CLLocation(latitude: locationPoint.latitude, longitude:locationPoint.longitude)
@@ -202,8 +220,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
             }
              // Add to mapView
             self.mapView.addAnnotation(newAnnotation!)
-            //save
-            //self.addMapLocation(annotation: newAnnotation!)
             
             DispatchQueue.main.async() {
                 // Add this annotation point to core data as Location object
@@ -352,7 +368,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate, CLLocationM
         if segue.identifier == "PicGallery"{
             if let annotaionView = sender as? MKAnnotationView {
                 let controller = segue.destination as! PicGalleryViewController
-                 controller.location =  self.locationToUpdate
+                controller.location =  self.locationToUpdate
             }
         }
     }
@@ -380,13 +396,13 @@ extension PhotoAlbumViewController {
             pinView!.rightCalloutAccessoryView =  UIButton(type: UIButtonType.detailDisclosure)
             
             //  Left call out button as delete location button
-            let deleteLocationButton = UIButton(type: UIButtonType.system)
-            deleteLocationButton.frame = CGRect(x:0, y:0, width:200, height:300)
-            deleteLocationButton.setImage(UIImage(named: "deleteLocation"), for: UIControlState.normal)
-            deleteLocationButton.backgroundColor = UIColor.cyan
-            pinView?.leftCalloutAccessoryView = deleteLocationButton
-            pinView!.rightCalloutAccessoryView =  deleteLocationButton
-            pinView?.isEnabled = true
+//            let deleteLocationButton = UIButton(type: UIButtonType.system)
+//            deleteLocationButton.frame = CGRect(x:0, y:0, width:200, height:300)
+//            deleteLocationButton.setImage(UIImage(named: "deleteLocation"), for: UIControlState.normal)
+//            deleteLocationButton.backgroundColor = UIColor.cyan
+//            pinView?.leftCalloutAccessoryView = deleteLocationButton
+//            pinView!.rightCalloutAccessoryView =  deleteLocationButton
+//            pinView?.isEnabled = true
             annotaionToUpdate = pinView?.annotation
             
         } else {
@@ -398,7 +414,7 @@ extension PhotoAlbumViewController {
     
     // Update location when pin is dragged
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
-        
+   
         switch newState {
         case .starting:
             view.dragState = .dragging
